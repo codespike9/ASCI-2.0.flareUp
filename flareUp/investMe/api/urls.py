@@ -1,6 +1,6 @@
 from company.views import CompanyViewSet
 from django.urls import path,include
-from user.views import companyManagaerProfileRegister,LoginAPI,register
+from user.views import companyManagaerProfileRegister, CompanyManagaerLoginAPI,register
 from rest_framework.routers import DefaultRouter
 
 router= DefaultRouter()
@@ -14,7 +14,7 @@ urlpatterns =router.urls
 
 urlpatterns = [
      path('',include(router.urls)),
-     path('login/',LoginAPI.as_view()),
+     path('login/',CompanyManagaerLoginAPI.as_view()),
 #     path('index/',index),
 #     path('person/',person),
 #     path('login/',login),
