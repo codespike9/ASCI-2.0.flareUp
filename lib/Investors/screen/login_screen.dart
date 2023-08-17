@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_flareup/Investors/screen/signup_screen.dart';
 
 import 'package:flutter_flareup/widgets/common/common_textfield.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -100,8 +101,10 @@ class _LoginScreenState extends State<LoginScreen> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               TextButton(
-                                onPressed: () {},
-                                style: const ButtonStyle(),
+                                onPressed: () {
+                                  Navigator.pushNamed(
+                                      context, SignUpScreen.routeName);
+                                },
                                 child: const Text(
                                   'Sign Up',
                                   textAlign: TextAlign.left,
