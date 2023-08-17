@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_flareup/Start-Screen/start_screen.dart';
+import 'package:flutter_flareup/routes.dart';
+import 'package:flutter_flareup/utils/colors.dart';
 
 void main() {
   runApp(const MyApp());
@@ -7,19 +10,17 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+      title: 'flareUp',
+      theme: ThemeData.light().copyWith(
         useMaterial3: true,
+        scaffoldBackgroundColor: GlobalVariables.backgroundColor,
       ),
-      home: const Text("Flare-UP"),
+      debugShowCheckedModeBanner: false,
+      onGenerateRoute: (settings) => generateRoute(settings),
+      home: const StartScreen(),
     );
   }
 }
-
-
