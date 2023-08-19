@@ -1,6 +1,6 @@
-from company.views import CompanyViewSet
+from company.views import CompanyViewSet,CompanyProfileViewSet
 from django.urls import path,include
-from user.views import companyManagaerProfileRegister, CompanyManagaerLoginAPI,register
+from user.views import companyManagaerProfileRegister, CompanyManagaerLoginAPI,register,logout_view
 from rest_framework.routers import DefaultRouter
 
 router= DefaultRouter()
@@ -14,9 +14,8 @@ urlpatterns =router.urls
 
 urlpatterns = [
      path('',include(router.urls)),
-     path('login/',CompanyManagaerLoginAPI.as_view()),
-#     path('index/',index),
-#     path('person/',person),
-#     path('login/',login),
-#     path('person-api-class/',personAPI.as_view()),
+     path('loginAsCompanyManager/',CompanyManagaerLoginAPI.as_view()),
+     path('logout/', logout_view, name='logout'),
+     path('CompanyProfile/<int:id>/', CompanyProfileViewSet.as_view({'get': 'list','patch':'update','delete':'destroy'})),
+     
  ]

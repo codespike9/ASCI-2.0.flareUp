@@ -52,6 +52,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
 ]
 
 ROOT_URLCONF = 'investMe.urls'
@@ -139,3 +140,11 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
     ]
 }
+
+# settings.py
+# Choose your desired session engine
+SESSION_ENGINE = "django.contrib.sessions.backends.db"
+# Optional: Configure session-related settings like cookie name, age, and secure flag
+SESSION_COOKIE_NAME = "my_session_cookie"
+SESSION_COOKIE_AGE = 3600  # in seconds
+SESSION_COOKIE_SECURE = True  # Set to True for HTTPS sites
