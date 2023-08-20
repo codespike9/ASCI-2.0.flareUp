@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+
 import 'package:flutter_flareup/Investors/screen/signup_screen.dart';
+import 'package:flutter_flareup/Investors/screen/tabscreen.dart';
 
 import 'package:flutter_flareup/widgets/common/common_textfield.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -86,11 +88,15 @@ class _LoginScreenState extends State<LoginScreen> {
                                 backgroundColor:
                                     const Color.fromARGB(255, 64, 63, 68),
                                 child: IconButton(
-                                    color: Colors.white,
-                                    onPressed: () {},
-                                    icon: const Icon(
-                                      Icons.arrow_forward,
-                                    )),
+                                  color: Colors.white,
+                                  onPressed: () {
+                                    Navigator.pushNamed(
+                                        context, InvestorTabScreen.routeName);
+                                  },
+                                  icon: const Icon(
+                                    Icons.arrow_forward,
+                                  ),
+                                ),
                               )
                             ],
                           ),
