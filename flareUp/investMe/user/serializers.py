@@ -23,11 +23,19 @@ class RegisterSerializer(serializers.Serializer):
         return validated_data
     
 class CompanyManagerProfileSerializer(serializers.ModelSerializer):
-    user=RegisterSerializer(read_only=True)
     class Meta:
         model = CompanyManagerProfile
         fields = '__all__'  
+        
+    def validate(self, data):
+        if data['username']:
+            if CompanyManagerProfile.objects.filter(username=data['username']).exists():
+                raise serializers.ValidationError('username is taken')
+        if data['email']:
+            if CompanyManagerProfile.objects.filter(email=data['email']).exists():
+                raise serializers.ValidationError('email is taken')
+        return data
 
-class LoginSerializer(serializers.Serializer):
+class CompanyManagaerLoginSerializer(serializers.Serializer):
     username= serializers.CharField()
     password=serializers.CharField()
