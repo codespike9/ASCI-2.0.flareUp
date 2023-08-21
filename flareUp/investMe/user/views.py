@@ -18,12 +18,12 @@ def logout_view(request):
 class register(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = RegisterSerializer
-    allowed_methods = ['POST']
+    http_method_names = ['post']
 
 class companyManagaerProfileRegister(viewsets.ModelViewSet):
-    queryset = CompanyManagerProfile.objects.all()
+    # queryset = CompanyManagerProfile.objects.all()
     serializer_class = CompanyManagerProfileSerializer
-    allowed_methods = ['POST']
+    http_method_names = ['post']
 
 class CompanyManagaerLoginAPI(APIView):
 
