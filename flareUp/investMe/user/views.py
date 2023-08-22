@@ -1,11 +1,10 @@
 from rest_framework import viewsets,status
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 from rest_framework.authtoken.models import Token
 from .models import CompanyManagerProfile
-from .serializers import CompanyManagerProfileSerializer,RegisterSerializer,CompanyManagaerLoginSerializer
+from .serializers import CompanyManagerProfileSerializer,CompanyManagaerLoginSerializer
 from django.contrib.auth import logout
 from rest_framework.decorators import api_view
 from django.shortcuts import render, redirect
@@ -22,10 +21,7 @@ def logout_view(request):
     data = {'message': 'Logged Out!'}
     return Response(data)
 
-class register(viewsets.ModelViewSet):
-    queryset = User.objects.all()
-    serializer_class = RegisterSerializer
-    http_method_names = ['post']
+
 
 class companyManagaerProfileRegister(viewsets.ModelViewSet):
     queryset = CompanyManagerProfile.objects.all()
