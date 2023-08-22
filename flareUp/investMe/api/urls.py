@@ -1,7 +1,8 @@
-from company.views import CompanyViewSet,CompanyProfileViewSet
+from company.views import CompanyViewSet,CompanyProfileViewSet,flareUpValidation
 from django.urls import path,include
 from user.views import companyManagaerProfileRegister, CompanyManagaerLoginAPI,register,logout_view
 from rest_framework.routers import DefaultRouter
+from user.views import signin
 
 router= DefaultRouter()
 router.register(r'company',CompanyViewSet,basename='company')
@@ -14,6 +15,7 @@ urlpatterns =router.urls
 
 urlpatterns = [
      path('',include(router.urls)),
+     path("signin/",signin,name="signin"),
      path('loginAsCompanyManager/',CompanyManagaerLoginAPI.as_view()),
      path('logout/', logout_view, name='logout'),
      path('CompanyProfile/<int:id>/', CompanyProfileViewSet.as_view({'get': 'list','patch':'update','delete':'destroy'})),

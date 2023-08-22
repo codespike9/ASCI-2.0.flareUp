@@ -38,7 +38,8 @@ class Company(models.Model):
     equity=models.DecimalField(max_digits=3,decimal_places=0,validators=PERCENTAGE_VALIDATOR)
     valuation=models.FloatField(null=True,blank=True)
     quantity_available=models.IntegerField(null=True,blank=True,default=100)
-
+    valid=models.BooleanField(default=False,blank=True)
+    image = models.ImageField(upload_to='cover_images',null=True,blank=True)
 
     def __str__(self):
         return self.companyName

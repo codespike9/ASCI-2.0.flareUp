@@ -8,6 +8,13 @@ from .models import CompanyManagerProfile
 from .serializers import CompanyManagerProfileSerializer,RegisterSerializer,CompanyManagaerLoginSerializer
 from django.contrib.auth import logout
 from rest_framework.decorators import api_view
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from django.contrib.auth import authenticate, login,logout
+from django.views.decorators.cache import never_cache
+
+
+
 
 @api_view(['GET'])
 def logout_view(request):
@@ -18,12 +25,12 @@ def logout_view(request):
 class register(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = RegisterSerializer
-    allowed_methods = ['POST']
+    http_method_names = ['post']
 
 class companyManagaerProfileRegister(viewsets.ModelViewSet):
     queryset = CompanyManagerProfile.objects.all()
     serializer_class = CompanyManagerProfileSerializer
-    allowed_methods = ['POST']
+    http_method_names = ['post']
 
 class CompanyManagaerLoginAPI(APIView):
 
@@ -42,11 +49,32 @@ class CompanyManagaerLoginAPI(APIView):
                 # token, _= Token.objects.get_or_create(user=user)
                 request.session['logged_in'] = True
                 request.session['user']=user.id
+                request.session['email']=user.email
                 return Response({'status':True,'message':'user login'},status.HTTP_201_CREATED)
         return Response({
             'status':False,
             'message':'Invalid Credentials'
         },status.HTTP_400_BAD_REQUEST)
     
+
+@never_cache
+def signin(request):
+    if request.user.is_authenticated:
+        return redirect('validation')
+    if request.method=="POST":
+        username = request.POST.get('user_name')
+        password = request.POST.get('password')
+
+        user_exists=False
+
+        user = authenticate(request,username=username, password=password)
+        if user is None:
+            messages.error(request, "Invalid Username or Password")
+            return render(request,"user/signin.html")
+        else:
+            login(request,user)
+            return redirect('validation')
+
+    return render(request,'user/signin.html')
 
 

@@ -1,10 +1,12 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from rest_framework import viewsets,status
 from .serializers import CompanySerializer
 from rest_framework import parsers
 from .models import Company
 from .utils import MultipartJsonParser
 from rest_framework.response import Response
+from django.contrib.auth.decorators  import login_required
+
 
 
 class CompanyViewSet(viewsets.ModelViewSet):
@@ -15,9 +17,12 @@ class CompanyViewSet(viewsets.ModelViewSet):
     queryset=Company.objects.all().order_by()
     allowed_methods = ['POST','GET']
 
+    
+
     def get_serializer_context(self):
         context = super().get_serializer_context()
-        context['session_data'] = self.request.session.get('user')
+        context['user'] = self.request.session.get('user')
+        context['email']=self.request.session.get('email')
         return context
     
 
@@ -26,8 +31,7 @@ class CompanyViewSet(viewsets.ModelViewSet):
         logged_in=request.session.get('logged_in')
         
         if logged_in:
-            print(request.session.get('user'))
-            queryset=Company.objects.filter(user=request.session.get('user')).order_by()
+            queryset=Company.objects.filter(user=request.session.get('user'),valid=True).order_by()
             serialized_data = self.serializer_class(queryset, many=True).data
             return Response(serialized_data)
         else:
@@ -72,5 +76,20 @@ class CompanyProfileViewSet(viewsets.ModelViewSet):
         else:
             return Response({'Message':"You are not logged in!"})
 
-
-
+@login_required(login_url="/api/signin")
+def flareUpValidation(request):
+    company=Company.objects.all()
+    context={
+        "company":company
+    }
+    return render(request,"FlareUp/validation.html",context)
+def valid(request,id):
+    if request.method == "POST":
+        valid=request.POST.get('valid')
+    company=Company.objects.get(id=id)
+    if valid == "on":
+        company.valid=True
+    else:
+        company.valid=False
+    company.save()
+    return redirect("validation")
