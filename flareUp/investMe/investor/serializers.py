@@ -2,7 +2,7 @@ from rest_framework import serializers
 from django.contrib.auth.models import User
 from company.models import Company
 class InvestorLoginSerializer(serializers.Serializer):
-        email= serializers.EmailField()
+        username= serializers.CharField()
         password=serializers.CharField()
 
 class RegisterSerializer(serializers.ModelSerializer):
@@ -20,11 +20,11 @@ class RegisterSerializer(serializers.ModelSerializer):
                 raise serializers.ValidationError('email is taken')
         return data
     
-    # def create(self, validated_data):
-    #     user=User.objects.create(username=validated_data['username'],email=validated_data['email'])
-    #     user.set_password(validated_data['password'])
-    #     user.save()
-    #     return validated_data 
+    def create(self, validated_data):
+        user=User.objects.create(username=validated_data['username'],email=validated_data['email'])
+        user.set_password(validated_data['password'])
+        user.save()
+        return validated_data 
 
 
 class CompanyListSerializer(serializers.ModelSerializer):
@@ -34,9 +34,5 @@ class CompanyListSerializer(serializers.ModelSerializer):
           model =Company
           fields='__all__'
 
-class FilterCategorySerializer(serializers.ModelSerializer):
-     
-     class Meta:
-          model=Company
-          fields='__all__'
+
 

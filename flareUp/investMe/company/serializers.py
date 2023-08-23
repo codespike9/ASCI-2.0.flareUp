@@ -16,7 +16,10 @@ class CompanySerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         # Assign a value to a field before creating the object
         subject = "New company listed"
-        html_message = render_to_string('mail/mail_template1.html')
+        context={
+                    "message":"New company created"
+                }
+        html_message = render_to_string('mail/mail_template1.html',context)
         plain_message = strip_tags(html_message)
         to = [settings.EMAIL_HOST_USER, ]
         from_email = self.context.get('email')

@@ -6,7 +6,10 @@ from .models import Company
 from .utils import MultipartJsonParser
 from rest_framework.response import Response
 from django.contrib.auth.decorators  import login_required
-
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
+from django.conf import settings
+from django.core.mail import send_mail
 
 
 class CompanyViewSet(viewsets.ModelViewSet):
@@ -31,7 +34,7 @@ class CompanyViewSet(viewsets.ModelViewSet):
         logged_in=request.session.get('logged_in')
         
         if logged_in:
-            queryset=Company.objects.filter(user=request.session.get('user'),valid=True).order_by()
+            queryset=Company.objects.filter(user=request.session.get('user')).order_by()
             serialized_data = self.serializer_class(queryset, many=True).data
             return Response(serialized_data)
         else:
@@ -53,13 +56,23 @@ class CompanyProfileViewSet(viewsets.ModelViewSet):
         logged_in=request.session.get('logged_in')
         id = kwargs.get('id')
         if logged_in:
-            queryset=Company.objects.filter(id=id)
-            serialized_data = self.serializer_class(queryset, many=True).data
             data=request.data
+            data['valid']=False
+            print(data)
             obj=Company.objects.get(id=id)
             serializer=CompanySerializer(obj,data=data,partial=True)
             if serializer.is_valid():
                 serializer.save()
+                subject = "Data updated"
+                context={
+                    "message":obj.companyName + " company updated"
+                }
+                html_message = render_to_string('mail/mail_template1.html',context)
+                plain_message = strip_tags(html_message)
+                to = [settings.EMAIL_HOST_USER, ]
+                from_email = settings.EMAIL_HOST_USER
+                # send_mail(subject=subject, message=body, from_email=from_email, recipient_list=to,fail_silently=False)
+                send_mail(subject=subject, message=plain_message, from_email=from_email, recipient_list=to,fail_silently=False, html_message=html_message)
             else:
                 return Response(serializer.errors)
             return Response(serializer.data)
