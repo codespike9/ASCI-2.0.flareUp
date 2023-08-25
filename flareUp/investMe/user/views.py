@@ -11,7 +11,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import authenticate, login,logout
 from django.views.decorators.cache import never_cache
-
+from django.middleware.csrf import get_token
 
 
 
@@ -73,4 +73,10 @@ def signin(request):
 
     return render(request,'user/signin.html')
 
+
+
+@api_view(['GET'])
+def get_csrf_token(request):
+    csrf_token = get_token(request)
+    return Response({'csrf_token': csrf_token})
 

@@ -34,5 +34,7 @@ class CompanyListSerializer(serializers.ModelSerializer):
           model =Company
           fields='__all__'
 
-
-
+class InvestmentSummarySerializer(serializers.Serializer):
+     
+     equity=serializers.IntegerField()
+     id=serializers.IntegerField()
