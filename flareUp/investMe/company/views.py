@@ -14,13 +14,10 @@ from django.core.mail import send_mail
 
 class CompanyViewSet(viewsets.ModelViewSet):
     
-
     serializer_class=CompanySerializer
-    parser_classes = (MultipartJsonParser, parsers.JSONParser)
+    # parser_classes = (MultipartJsonParser, parsers.JSONParser)
     queryset=Company.objects.all().order_by()
     allowed_methods = ['POST','GET']
-
-    
 
     def get_serializer_context(self):
         context = super().get_serializer_context()
@@ -28,9 +25,7 @@ class CompanyViewSet(viewsets.ModelViewSet):
         context['email']=self.request.session.get('email')
         return context
     
-
     def list(self, request):
-        
         logged_in=request.session.get('logged_in')
         
         if logged_in:
@@ -41,6 +36,7 @@ class CompanyViewSet(viewsets.ModelViewSet):
             return Response({'Message':"You are not logged in!"})
         
 class CompanyProfileViewSet(viewsets.ModelViewSet):
+    queryset=Company.objects.all()
     serializer_class=CompanySerializer
     def list(self, request, *args, **kwargs):
         logged_in=request.session.get('logged_in')

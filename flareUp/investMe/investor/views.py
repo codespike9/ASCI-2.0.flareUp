@@ -58,6 +58,7 @@ class CompnayList(viewsets.ModelViewSet):
 
 
 class CompanyProfile(viewsets.ModelViewSet):
+    queryset=Company.objects.all()
     http_method_names = ['get']
     serializer_class=CompanySerializer
     def list(self, request, *args, **kwargs):
@@ -82,6 +83,7 @@ class filterCategory(viewsets.ViewSet):
             return Response({'Message':'Login required'})
         
 
+
 class filterValuation(viewsets.ViewSet):
     serializer_class=CompanyListSerializer
     def list(self,request,*args, **kwargs):
@@ -99,6 +101,7 @@ class filterValuation(viewsets.ViewSet):
 class Search(viewsets.ModelViewSet):
     serializer_class=CompanyListSerializer
     companies=Company.objects.all()
+    http_method_names = ['get']
     def list(self,request):
         if request.user.is_authenticated:
             search= request.GET.get('search')

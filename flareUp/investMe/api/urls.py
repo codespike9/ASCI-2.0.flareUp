@@ -6,14 +6,19 @@ from rest_framework.routers import DefaultRouter
 from user.views import signin,get_csrf_token
 
 router= DefaultRouter()
+#company urls
 router.register(r'company',CompanyViewSet,basename='company')
-router.register(r'register',register,basename='register')
+# router.register(r'CompanyProfile',CompanyProfileViewSet,basename='CompanyProfile')
+router.register(r'register_as_company_manager',companyManagaerProfileRegister,basename='register_as_company_manager')
+
+
+#investor urls
 router.register(r'companyList',CompnayList,basename='companyList')
+router.register(r'register',register,basename='register')
 router.register(r'loginInvestor',InvestorLogin,basename='loginInvestor')
 router.register(r'InvestmentSummary',InvestmentSummary,basename='InvestmentSummary')
-
 router.register(r'searchCompany',Search,basename='searchCompany')
-router.register(r'register_as_company_manager',companyManagaerProfileRegister,basename='register_as_company_manager')
+
 urlpatterns =router.urls
 
 
