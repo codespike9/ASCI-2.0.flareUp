@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_flareup/Investors/screen/in_buisness_details.dart';
+import 'package:flutter_flareup/Investors/widget/category_filters.dart';
 import 'package:flutter_flareup/models/in_buisness_model.dart';
 
 class HomePage extends StatefulWidget {
@@ -13,24 +14,39 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  Set<BusinessCategory> selectedCategories = {};
+
   @override
   Widget build(BuildContext context) {
+    List<BusinessModel> filteredBusinesses;
+
+    if (selectedCategories.isNotEmpty) {
+      filteredBusinesses = widget.business
+          .where((business) => selectedCategories.contains(business.category))
+          .toList();
+    } else {
+      filteredBusinesses = widget.business;
+    }
+
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Business Listings'),
+      ),
       body: Container(
         decoration: const BoxDecoration(
           gradient: RadialGradient(
             colors: [
-              Color.fromARGB(255, 191, 224, 239),
-              Color.fromARGB(255, 224, 224, 224)
+              Color.fromARGB(242, 193, 228, 244),
+              Color.fromARGB(255, 252, 252, 252)
             ],
             center: Alignment.topLeft,
-            radius: 2.4,
+            radius: 1.5,
           ),
         ),
         child: ListView.builder(
-          itemCount: widget.business.length,
+          itemCount: filteredBusinesses.length,
           itemBuilder: (context, index) {
-            final businessData = widget.business[index];
+            final businessData = filteredBusinesses[index];
             return InkWell(
               onTap: () {
                 Navigator.pushNamed(
@@ -89,6 +105,36 @@ class _HomePageState extends State<HomePage> {
             );
           },
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          showModalBottomSheet(
+            context: context,
+            builder: (BuildContext context) {
+              return Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  ...BusinessCategory.values.map((category) {
+                    return CategoryCheckbox(
+                      category: category,
+                      isSelected: selectedCategories.contains(category),
+                      onTap: () {
+                        setState(() {
+                          if (selectedCategories.contains(category)) {
+                            selectedCategories.remove(category);
+                          } else {
+                            selectedCategories.add(category);
+                          }
+                        });
+                      },
+                    );
+                  }).toList(),
+                ],
+              );
+            },
+          );
+        },
+        child: const Icon(Icons.filter_list),
       ),
     );
   }

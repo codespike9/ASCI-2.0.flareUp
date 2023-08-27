@@ -5,6 +5,7 @@ import 'package:flutter_flareup/Investors/screen/login_screen.dart';
 import 'package:flutter_flareup/Investors/screen/signup_screen.dart';
 import 'package:flutter_flareup/Investors/screen/tabscreen.dart';
 import 'package:flutter_flareup/models/in_buisness_model.dart';
+import 'package:flutter_flareup/start-Up/screens/sign_in.dart';
 
 Route<dynamic> generateRoute(RouteSettings routeSettings) {
   switch (routeSettings.name) {
@@ -26,11 +27,16 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
         builder: (_) => const InvestorTabScreen(),
       );
 
-      case BusinessDetailsScreen.routeName:
+    case BusinessDetailsScreen.routeName:
       final businessData = routeSettings.arguments as BusinessModel;
       return MaterialPageRoute(
+          settings: routeSettings,
+          builder: (_) => BusinessDetailsScreen(businessData));
+
+    case SigninStartupScreen.routeName:
+      return MaterialPageRoute(
         settings: routeSettings,
-        builder: (_) =>   BusinessDetailsScreen(businessData)
+        builder: (_) => const SigninStartupScreen(),
       );
 
     default:

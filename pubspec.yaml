@@ -38,6 +38,9 @@ dependencies:
   google_fonts: ^5.1.0
   riverpod: ^2.3.7
   uuid: ^3.0.7
+  flutter_riverpod: ^2.3.7
+  icons_flutter: ^0.0.4
+  
   
   
   
@@ -67,7 +70,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/images/StartScreen.png
-  #   - images/a_dot_ham.jpeg
+    - assets/images/signin.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

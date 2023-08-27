@@ -41,15 +41,15 @@ class _InvestorTabScreenState extends State<InvestorTabScreen> {
         onTap: _onTabTapped,
         items: const [
           BottomNavigationBarItem(
-            icon: Icon(Icons.contacts),
+            icon: Icon(Icons.layers),
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.phone),
+            icon: Icon(Icons.note_alt),
             label: 'Blog',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.mail),
+            icon: Icon(Icons.person_2),
             label: 'Y-Invest',
           ),
         ],
