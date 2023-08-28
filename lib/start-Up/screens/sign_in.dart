@@ -1,21 +1,59 @@
 import 'package:flutter/material.dart';
-
 import 'package:flutter_flareup/start-Up/config/pallete.dart';
+import 'package:flutter_flareup/start-Up/models/user.dart';
+import 'package:flutter_flareup/start-Up/services/startup_auth.service.dart';
 import 'package:flutter_flareup/start-Up/widgets/signin_textfield.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:icons_flutter/icons_flutter.dart';
 
-class BuisnessSigninScreen extends StatefulWidget {
+class BuisnessSigninScreen extends ConsumerStatefulWidget {
   const BuisnessSigninScreen({super.key});
   static const String routeName = '/buisness-signin-screen';
 
   @override
-  State<BuisnessSigninScreen> createState() => _BuisnessSigninScreenState();
+  ConsumerState<BuisnessSigninScreen> createState() =>
+      _BuisnessSigninScreenState();
 }
 
-class _BuisnessSigninScreenState extends State<BuisnessSigninScreen> {
+class _BuisnessSigninScreenState extends ConsumerState<BuisnessSigninScreen> {
   bool isMale = true;
   bool isSignUpScreen = true;
   bool isRememberMe = false;
+
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _dobController = TextEditingController();
+  final TextEditingController _ageController = TextEditingController();
+  final TextEditingController _genderController = TextEditingController();
+  final TextEditingController _phonenoController = TextEditingController();
+  final TextEditingController _officenoController = TextEditingController();
+  final TextEditingController _focoController = TextEditingController();
+  final TextEditingController _designationController = TextEditingController();
+  final TextEditingController _statenameController = TextEditingController();
+  final TextEditingController _citynameController = TextEditingController();
+  final TextEditingController _officeaddController = TextEditingController();
+  final TextEditingController _officepinController = TextEditingController();
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _usernameController.dispose();
+    _passwordController.dispose();
+    _nameController.dispose();
+    _dobController.dispose();
+    _ageController.dispose();
+    _genderController.dispose();
+    _phonenoController.dispose();
+    _officenoController.dispose();
+    _focoController.dispose();
+    _designationController.dispose();
+    _statenameController.dispose();
+    _citynameController.dispose();
+    _officeaddController.dispose();
+    _officepinController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -175,103 +213,132 @@ class _BuisnessSigninScreenState extends State<BuisnessSigninScreen> {
                     if (isSignUpScreen)
                       Container(
                         margin: const EdgeInsets.only(top: 20),
-                        child: const Column(
+                        child: Column(
                           children: [
                             SigninTextField(
-                                hintText: "Username",
+                              hintText: "Username",
+                              keyboardType: TextInputType.name,
+                              obscureText: false,
+                              prefixIcon: Icons.person,
+                              controller: _usernameController,
+                            ),
+                            const SizedBox(
+                              height: 6,
+                            ),
+                            SigninTextField(
+                              hintText: "Email",
+                              keyboardType: TextInputType.emailAddress,
+                              obscureText: false,
+                              prefixIcon: MaterialCommunityIcons.email_outline,
+                              controller: _emailController,
+                            ),
+                            const SizedBox(
+                              height: 6,
+                            ),
+                            SigninTextField(
+                              hintText: "Password",
+                              keyboardType: TextInputType.text,
+                              obscureText: true,
+                              prefixIcon: MaterialCommunityIcons.lock,
+                              controller: _passwordController,
+                            ),
+                            const SizedBox(
+                              height: 6,
+                            ),
+                            SigninTextField(
+                                hintText: "Name",
                                 keyboardType: TextInputType.name,
                                 obscureText: false,
-                                prefixIcon: Icons.person),
-                            SizedBox(
+                                prefixIcon: Icons.person_2_sharp,
+                                controller: _nameController),
+                            const SizedBox(
                               height: 6,
                             ),
                             SigninTextField(
-                                hintText: "Email",
-                                keyboardType: TextInputType.emailAddress,
-                                obscureText: false,
-                                prefixIcon:
-                                    MaterialCommunityIcons.email_outline),
-                            SizedBox(
+                              hintText: "DOB(ddmmyyyy)",
+                              keyboardType: TextInputType.datetime,
+                              obscureText: false,
+                              prefixIcon: Icons.calendar_month,
+                              controller: _dobController,
+                            ),
+                            const SizedBox(
                               height: 6,
                             ),
                             SigninTextField(
-                                hintText: "Password",
-                                keyboardType: TextInputType.text,
-                                obscureText: true,
-                                prefixIcon: MaterialCommunityIcons.lock),
-                            SizedBox(
-                              height: 6,
-                            ),
-                            SigninTextField(
-                                hintText: "DOB(ddmmyyyy)",
-                                keyboardType: TextInputType.datetime,
-                                obscureText: false,
-                                prefixIcon: Icons.calendar_month),
-                            SizedBox(
-                              height: 6,
+                              hintText: "age",
+                              keyboardType: TextInputType.number,
+                              obscureText: false,
+                              prefixIcon: Icons.people,
+                              controller: _ageController,
                             ),
                             SigninTextField(
                               hintText: "Gender",
                               keyboardType: TextInputType.text,
                               obscureText: false,
                               prefixIcon: Icons.people,
+                              controller: _genderController,
                             ),
-                            SizedBox(height: 6),
-                            SigninTextField(
-                              hintText: "Marital Status",
-                              keyboardType: TextInputType.text,
-                              obscureText: false,
-                              prefixIcon: Icons.favorite,
-                            ),
-                            SizedBox(height: 6),
+                            const SizedBox(height: 6),
                             SigninTextField(
                               hintText: "Mobile Number",
                               keyboardType: TextInputType.phone,
                               obscureText: false,
                               prefixIcon: Icons.phone,
+                              controller: _phonenoController,
                             ),
-                            SizedBox(height: 6),
-                            SigninTextField(
-                              hintText: "Alternate Mobile Number",
-                              keyboardType: TextInputType.phone,
-                              obscureText: false,
-                              prefixIcon: Icons.phone,
-                            ),
-                            SizedBox(height: 6),
+                            const SizedBox(height: 6),
                             SigninTextField(
                               hintText: "Office Number",
                               keyboardType: TextInputType.phone,
                               obscureText: false,
                               prefixIcon: Icons.phone,
+                              controller: _officenoController,
                             ),
-                            SizedBox(height: 6),
+                            const SizedBox(height: 6),
                             SigninTextField(
                               hintText: "Founder/Cofounder Name",
                               keyboardType: TextInputType.text,
                               obscureText: false,
                               prefixIcon: Icons.group,
+                              controller: _focoController,
                             ),
-                            SizedBox(height: 6),
+                            const SizedBox(height: 6),
                             SigninTextField(
                               hintText: "Designation in Business",
                               keyboardType: TextInputType.text,
                               obscureText: false,
                               prefixIcon: Icons.work,
+                              controller: _designationController,
                             ),
-                            SizedBox(height: 6),
+                            const SizedBox(height: 6),
                             SigninTextField(
-                              hintText: "Currently Employed",
-                              keyboardType: TextInputType.text,
-                              obscureText: false,
-                              prefixIcon: Icons.work_outline,
-                            ),
-                            SizedBox(height: 6),
-                            SigninTextField(
-                              hintText: "Home State",
+                              hintText: "State",
                               keyboardType: TextInputType.text,
                               obscureText: false,
                               prefixIcon: Icons.location_on,
+                              controller: _statenameController,
                             ),
+                            const SizedBox(height: 6),
+                            SigninTextField(
+                                hintText: "City",
+                                keyboardType: TextInputType.name,
+                                obscureText: false,
+                                prefixIcon: Icons.location_off_sharp,
+                                controller: _citynameController),
+                            const SizedBox(height: 6),
+                            SigninTextField(
+                                hintText: "office-addr",
+                                keyboardType: TextInputType.streetAddress,
+                                obscureText: false,
+                                prefixIcon: Icons.location_off_sharp,
+                                controller: _officeaddController),
+                            const SizedBox(height: 6),
+                            SigninTextField(
+                                hintText: "office-pincode",
+                                keyboardType: TextInputType.number,
+                                obscureText: false,
+                                prefixIcon: Icons.location_off_sharp,
+                                controller: _officepinController),
                           ],
                         ),
                       ),
@@ -280,26 +347,26 @@ class _BuisnessSigninScreenState extends State<BuisnessSigninScreen> {
                         margin: const EdgeInsets.only(top: 20),
                         child: Column(
                           children: [
-                            const SigninTextField(
+                            SigninTextField(
                               hintText: "Email",
                               keyboardType: TextInputType.emailAddress,
                               obscureText: false,
                               prefixIcon: MaterialCommunityIcons.email_outline,
+                              controller: _emailController,
                             ),
                             const SizedBox(height: 6),
-                            const SigninTextField(
+                            SigninTextField(
                               hintText: "Password",
                               keyboardType: TextInputType.text,
                               obscureText: true,
                               prefixIcon: MaterialCommunityIcons.lock,
+                              controller: _passwordController,
                             ),
                             const SizedBox(
                                 height:
                                     12), // Add spacing between text fields and button
                             ElevatedButton(
-                              onPressed: () {
-                                // Perform submit actions
-                              },
+                              onPressed: () {},
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Colors.orange,
                                 elevation: 5,
@@ -325,7 +392,28 @@ class _BuisnessSigninScreenState extends State<BuisnessSigninScreen> {
               right: 75,
               left: 75,
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () async {
+                  final user = User(
+                    username: _usernameController.text,
+                    email: _emailController.text,
+                    password: _passwordController.text,
+                    name: _nameController.text,
+                    dob: _dobController.text,
+                    age: int.parse(_ageController.text),
+                    gender: _genderController.text,
+                    phoneNo: _phonenoController.text,
+                    officeNo: _officenoController.text,
+                    foco: _focoController.text,
+                    designation: _designationController.text,
+                    state: _statenameController.text,
+                    city: _citynameController.text,
+                    officeAddress: _officeaddController.text,
+                    officePincode: int.parse(_officepinController.text),
+                  );
+                  final authServiceInstance = ref.read(authService);
+                  await authServiceInstance
+                      .signUp(user); // Call the signUp method
+                },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color.fromARGB(
                       221, 255, 153, 0), // Background color

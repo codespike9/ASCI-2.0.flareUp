@@ -8,17 +8,19 @@ class SigninTextField extends StatelessWidget {
       required this.hintText,
       required this.keyboardType,
       required this.obscureText,
-      required this.prefixIcon});
+      required this.prefixIcon,
+      required this.controller});
   final String hintText; // Parameter for hint text
   final TextInputType keyboardType; // Parameter for keyboard type
   final bool obscureText; // Parameter for obscuring the text
   final IconData prefixIcon; // Parameter for the prefix icon
-
+  final TextEditingController? controller;
   @override
   Widget build(BuildContext context) {
     return TextField(
       obscureText: obscureText,
       keyboardType: keyboardType,
+      controller: controller,
       decoration: InputDecoration(
         prefixIcon: Icon(
           prefixIcon,

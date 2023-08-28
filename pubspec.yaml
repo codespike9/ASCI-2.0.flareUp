@@ -38,8 +38,9 @@ dependencies:
   google_fonts: ^5.1.0
   riverpod: ^2.3.7
   uuid: ^3.0.7
-  flutter_riverpod: ^2.3.7
+  flutter_riverpod: ^2.3.9
   icons_flutter: ^0.0.4
+  http: ^1.1.0
   
   
   
