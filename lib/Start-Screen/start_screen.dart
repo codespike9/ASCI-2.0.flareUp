@@ -12,7 +12,7 @@ class StartScreen extends StatelessWidget {
       body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
-            colors: [Color.fromARGB(255, 156, 209, 234), Colors.white],
+            colors: [Color.fromARGB(255, 185, 227, 246), Colors.white],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
@@ -55,7 +55,7 @@ class StartScreen extends StatelessWidget {
                     text: 'Sign-In as Start-Up',
                     onTap: () {
                       Navigator.pushNamed(
-                          context, SigninStartupScreen.routeName);
+                          context, BuisnessSigninScreen.routeName);
                     },
                   );
                 }),

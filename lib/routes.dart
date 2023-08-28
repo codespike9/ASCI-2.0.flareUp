@@ -33,10 +33,10 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
           settings: routeSettings,
           builder: (_) => BusinessDetailsScreen(businessData));
 
-    case SigninStartupScreen.routeName:
+    case BuisnessSigninScreen.routeName:
       return MaterialPageRoute(
         settings: routeSettings,
-        builder: (_) => const SigninStartupScreen(),
+        builder: (_) => const BuisnessSigninScreen(),
       );
 
     default:
