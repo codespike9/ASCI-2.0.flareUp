@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_flareup/Investors/pages/blog_page.dart';
 import 'package:flutter_flareup/Investors/pages/home_page.dart';
 import 'package:flutter_flareup/Investors/pages/your_investment.dart';
-import 'package:flutter_flareup/data/in_business_data.dart';
+import 'package:flutter_flareup/Investors/data/in_business_data.dart';
 
 class InvestorTabScreen extends StatefulWidget {
   const InvestorTabScreen({super.key});

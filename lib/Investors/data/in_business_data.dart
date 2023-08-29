@@ -1,4 +1,4 @@
-import 'package:flutter_flareup/models/in_buisness_model.dart';
+import 'package:flutter_flareup/Investors/models/in_buisness_model.dart';
 
 List<BusinessModel> dummyBusinessData = [
   BusinessModel(

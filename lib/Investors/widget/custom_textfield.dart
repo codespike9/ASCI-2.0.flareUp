@@ -4,31 +4,31 @@ class CustomTextField extends StatelessWidget {
   final TextEditingController controller;
   final String hintText;
   final int maxLines;
+  final TextInputType keyboardType;
+  final bool obscureText; 
   const CustomTextField({
     Key? key,
     required this.controller,
     required this.hintText,
     this.maxLines = 1,
+    required this.keyboardType,  this.obscureText = false,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       controller: controller,
+      obscureText: obscureText,
+      keyboardType: keyboardType,
       decoration: InputDecoration(
         hintText: hintText,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(15.0), // Set the border radius
-          borderSide: const BorderSide(
+        border: const OutlineInputBorder(
+            borderSide: BorderSide(
+          color: Colors.black38,
+        )),
+        enabledBorder: const OutlineInputBorder(
+          borderSide: BorderSide(
             color: Colors.black38,
-            width: 2.0, // Set the border width
-          ),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(15.0), // Set the border radius
-          borderSide: const BorderSide(
-            color: Colors.black38,
-            width: 2.0, // Set the border width
           ),
         ),
       ),

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_flareup/models/in_buisness_model.dart';
+import 'package:flutter_flareup/Investors/models/in_buisness_model.dart';
 
 class CategoryCheckbox extends StatefulWidget {
   const CategoryCheckbox({

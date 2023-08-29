@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../models/in_buisness_model.dart';
+import '../models/in_buisness_model.dart';
 
 class BusinessDetailsScreen extends StatefulWidget {
   const BusinessDetailsScreen(this.business, {super.key});

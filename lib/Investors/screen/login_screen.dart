@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_flareup/Investors/screen/signup_screen.dart';
 import 'package:flutter_flareup/Investors/screen/tabscreen.dart';
-
-import 'package:flutter_flareup/widgets/common/common_textfield.dart';
+import 'package:flutter_flareup/Investors/widget/custom_textfield.dart';
+import 'package:http/http.dart' as http;
 import 'package:google_fonts/google_fonts.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -15,13 +15,39 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   @override
   void dispose() {
     super.dispose();
-    _emailController.dispose();
+    _usernameController.dispose();
     _passwordController.dispose();
+  }
+
+  Future<void> _signIn() async {
+    const apiUrl = 'http://dharmarajjena.pythonanywhere.com/api/loginInvestor/';
+
+    final requestBody = {
+      "username": _usernameController.text,
+      "password": _passwordController.text,
+    };
+
+    final response = await http.post(Uri.parse(apiUrl), body: requestBody);
+
+    if (response.statusCode == 201) {
+      print("Login Succesful");
+      // ignore: use_build_context_synchronously
+      Navigator.pushNamed(context, InvestorTabScreen.routeName);
+    } else {
+      // ignore: use_build_context_synchronously
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Login failed. Please check your credentials.'),
+          duration: Duration(seconds: 2),
+        ),
+      );
+      print('Login failed with status code: ${response.statusCode}');
+    }
   }
 
   @override
@@ -65,13 +91,19 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: Column(
                         children: [
                           CustomTextField(
-                              controller: _emailController, hintText: 'Email'),
+                            controller: _usernameController,
+                            hintText: 'Username',
+                            keyboardType: TextInputType.name,
+                          ),
                           const SizedBox(
                             height: 30,
                           ),
                           CustomTextField(
-                              controller: _passwordController,
-                              hintText: 'Password'),
+                            controller: _passwordController,
+                            hintText: 'Password',
+                            keyboardType: TextInputType.text,
+                            obscureText: true,
+                          ),
                           const SizedBox(
                             height: 40,
                           ),
@@ -90,8 +122,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 child: IconButton(
                                   color: Colors.white,
                                   onPressed: () {
-                                    Navigator.pushNamed(
-                                        context, InvestorTabScreen.routeName);
+                                    _signIn();
                                   },
                                   icon: const Icon(
                                     Icons.arrow_forward,
@@ -122,15 +153,16 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ),
                               ),
                               TextButton(
-                                  onPressed: () {},
-                                  child: const Text(
-                                    'Forgot Password',
-                                    style: TextStyle(
-                                      decoration: TextDecoration.underline,
-                                      color: Color(0xff4c505b),
-                                      fontSize: 18,
-                                    ),
-                                  )),
+                                onPressed: () {},
+                                child: const Text(
+                                  'Forgot Password',
+                                  style: TextStyle(
+                                    decoration: TextDecoration.underline,
+                                    color: Color(0xff4c505b),
+                                    fontSize: 18,
+                                  ),
+                                ),
+                              ),
                             ],
                           )
                         ],

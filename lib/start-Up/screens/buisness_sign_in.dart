@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+
 import 'package:flutter_flareup/start-Up/config/pallete.dart';
+import 'package:flutter_flareup/start-Up/config/snackbar.dart';
 import 'package:flutter_flareup/start-Up/models/user.dart';
+import 'package:flutter_flareup/start-Up/screens/buisness_screen.dart';
 import 'package:flutter_flareup/start-Up/services/startup_auth.service.dart';
 import 'package:flutter_flareup/start-Up/widgets/signin_textfield.dart';
+import 'package:flutter_flareup/start-Up/widgets/startup_snackbar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:icons_flutter/icons_flutter.dart';
 
@@ -19,6 +23,33 @@ class _BuisnessSigninScreenState extends ConsumerState<BuisnessSigninScreen> {
   bool isMale = true;
   bool isSignUpScreen = true;
   bool isRememberMe = false;
+
+  void onSignUpSuccess() {
+    setState(() {
+      isSignUpScreen = true;
+    });
+    showSnackBar(
+      context,
+      'Signup successful. Login with the same credentials.',
+      callback: () {
+        setState(() {
+          isSignUpScreen = false;
+        });
+      },
+    );
+  }
+
+  void onSignUpFailure() {
+    showSnackbar(context, 'Signup failed. Please try again.');
+  }
+
+  void onSignInFailure() {
+    showSnackbar(context, 'Login failed. Please check your credentials.');
+  }
+
+  void onSignInSuccess() {
+    Navigator.pushNamed(context, BuisnessScreen.routeName);
+  }
 
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -271,6 +302,9 @@ class _BuisnessSigninScreenState extends ConsumerState<BuisnessSigninScreen> {
                               prefixIcon: Icons.people,
                               controller: _ageController,
                             ),
+                            const SizedBox(
+                              height: 6,
+                            ),
                             SigninTextField(
                               hintText: "Gender",
                               keyboardType: TextInputType.text,
@@ -348,11 +382,11 @@ class _BuisnessSigninScreenState extends ConsumerState<BuisnessSigninScreen> {
                         child: Column(
                           children: [
                             SigninTextField(
-                              hintText: "Email",
-                              keyboardType: TextInputType.emailAddress,
+                              hintText: "Username",
+                              keyboardType: TextInputType.name,
                               obscureText: false,
-                              prefixIcon: MaterialCommunityIcons.email_outline,
-                              controller: _emailController,
+                              prefixIcon: Icons.person,
+                              controller: _usernameController,
                             ),
                             const SizedBox(height: 6),
                             SigninTextField(
@@ -366,14 +400,23 @@ class _BuisnessSigninScreenState extends ConsumerState<BuisnessSigninScreen> {
                                 height:
                                     12), // Add spacing between text fields and button
                             ElevatedButton(
-                              onPressed: () {},
+                              onPressed: () async {
+                                final authServiceInstance =
+                                    ref.read(authService);
+                                await authServiceInstance.signIn(
+                                  _usernameController.text,
+                                  _passwordController.text,
+                                  onSignInSuccess,
+                                  onSignInFailure,
+                                );
+                              },
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Colors.orange,
                                 elevation: 5,
                                 shadowColor: Colors.black,
                               ),
                               child: const Text(
-                                "Submit",
+                                "Login",
                                 style: TextStyle(
                                     fontSize: 16, color: Colors.white),
                               ),
@@ -411,8 +454,9 @@ class _BuisnessSigninScreenState extends ConsumerState<BuisnessSigninScreen> {
                     officePincode: int.parse(_officepinController.text),
                   );
                   final authServiceInstance = ref.read(authService);
-                  await authServiceInstance
-                      .signUp(user); // Call the signUp method
+                  await authServiceInstance.signUp(
+                      user, onSignUpSuccess, onSignUpFailure);
+                  // Call the signUp method
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color.fromARGB(
@@ -421,7 +465,7 @@ class _BuisnessSigninScreenState extends ConsumerState<BuisnessSigninScreen> {
                   shadowColor: Colors.black, // Shadow color
                 ),
                 child: const Text(
-                  "Submit",
+                  "SignUP",
                   style: TextStyle(
                       fontSize: 16, color: Colors.white), // Text color
                 ),

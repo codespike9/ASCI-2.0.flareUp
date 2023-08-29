@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 
 class GlobalVariables {
@@ -8,5 +6,4 @@ class GlobalVariables {
   static const Color backgroundColor = Colors.white;
   static const Color textColor = Colors.black;
   static const Color buttonColor = Color.fromARGB(193, 161, 128, 208);
-  
 }

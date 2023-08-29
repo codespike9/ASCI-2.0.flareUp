@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_flareup/Investors/screen/login_screen.dart';
-import 'package:flutter_flareup/start-Up/screens/sign_in.dart';
-import 'package:flutter_flareup/widgets/common/common_button.dart';
+import 'package:flutter_flareup/Start-Screen/widgets/common_button.dart';
+import 'package:flutter_flareup/start-Up/screens/buisness_sign_in.dart';
+
 import 'package:google_fonts/google_fonts.dart';
 
 class StartScreen extends StatelessWidget {

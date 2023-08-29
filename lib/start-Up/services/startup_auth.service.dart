@@ -8,7 +8,8 @@ final authService = Provider<AuthService>((ref) => AuthService());
 class AuthService {
   final String apiUrl = 'http://dharmarajjena.pythonanywhere.com/api/';
 
-  Future<void> signUp(User user) async {
+  Future<void> signUp(
+      User user, Function onSignUpSuccess, Function onSignUpFailure) async {
     final response = await http.post(
       Uri.parse('$apiUrl/register_as_company_manager/'),
       body: {
@@ -30,18 +31,36 @@ class AuthService {
         // Add more fields as needed
       },
     );
-    
-    /*if (response.statusCode == 200) {
+
+    if (response.statusCode == 201) {
       // Signup successful
       print('Signup Successful');
+      onSignUpSuccess();
     } else {
       // Handle signup error
       print('Signup Error: ${response.body}');
-    }*/
+      onSignUpFailure();
+    }
   }
 
-  Future<void> signIn(String email, String password) async {
-    // Simulate a login process
-    await Future.delayed(const Duration(seconds: 2));
+  Future<void> signIn(String username, String password,
+      Function onSignInSuccess, Function onSignInFailure) async {
+    final response = await http.post(
+      Uri.parse('$apiUrl/loginAsCompanyManager/'),
+      body: {
+        'username': username,
+        'password': password,
+      },
+    );
+
+    if (response.statusCode == 201) {
+      // Login successful
+      print('Login Successful');
+      onSignInSuccess();
+    } else {
+      // Handle login error
+      print('Login Error: ${response.body}');
+      onSignInFailure();
+    }
   }
 }

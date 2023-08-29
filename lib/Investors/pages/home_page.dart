@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_flareup/Investors/screen/in_buisness_details.dart';
 import 'package:flutter_flareup/Investors/widget/category_filters.dart';
-import 'package:flutter_flareup/models/in_buisness_model.dart';
+import 'package:flutter_flareup/Investors/models/in_buisness_model.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key, required this.business});
