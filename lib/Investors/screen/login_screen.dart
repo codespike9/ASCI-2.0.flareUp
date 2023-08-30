@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_flareup/Investors/screen/in_buisness_list.dart';
 
 import 'package:flutter_flareup/Investors/screen/signup_screen.dart';
-import 'package:flutter_flareup/Investors/screen/tabscreen.dart';
+//import 'package:flutter_flareup/Investors/screen/tabscreen.dart';
 import 'package:flutter_flareup/Investors/widget/custom_textfield.dart';
 import 'package:http/http.dart' as http;
 import 'package:google_fonts/google_fonts.dart';
@@ -37,7 +38,7 @@ class _LoginScreenState extends State<LoginScreen> {
     if (response.statusCode == 201) {
       print("Login Succesful");
       // ignore: use_build_context_synchronously
-      Navigator.pushNamed(context, InvestorTabScreen.routeName);
+      Navigator.pushNamed(context, BuisnessList.routeName);
     } else {
       // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(

@@ -45,8 +45,13 @@ class AuthService {
 
   Future<void> signIn(String username, String password,
       Function onSignInSuccess, Function onSignInFailure) async {
+    final headers = {
+      'Access-Control-Allow-Credentials': 'true', 
+    };
+
     final response = await http.post(
       Uri.parse('$apiUrl/loginAsCompanyManager/'),
+      headers: headers,
       body: {
         'username': username,
         'password': password,

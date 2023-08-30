@@ -4,8 +4,6 @@ import 'package:http/http.dart' as http;
 import 'package:file_picker/file_picker.dart';
 import 'package:http_parser/http_parser.dart';
 
-import 'dart:convert';
-
 class BuisnessFormScreen extends StatefulWidget {
   static const String routeName = '/buisness-form-screen';
   const BuisnessFormScreen({super.key});
@@ -58,8 +56,10 @@ class _BuisnessFormScreenState extends State<BuisnessFormScreen> {
     if (_formKey.currentState!.validate()) {
       final uri =
           Uri.parse('http://dharmarajjena.pythonanywhere.com/api/company/');
-      final request = http.MultipartRequest('POST', uri);
 
+      final request = http.MultipartRequest('POST', uri);
+      request.headers['Access-Control-Allow-Credentials'] = 'true';
+      request.headers['Content-Type'] = 'application/json';
       request.fields['business_stage'] = _businessStageController.text;
       request.fields['industry_category'] = _industryCategoryController.text;
       request.fields['companyName'] = _companyNameController.text;
@@ -86,12 +86,15 @@ class _BuisnessFormScreenState extends State<BuisnessFormScreen> {
 
       if (response.statusCode == 201) {
         print("Form submission successful");
-        // ignore: use_build_context_synchronously
+
+        if (!context.mounted) {
+          return;
+        }
+
         Navigator.of(context).pop();
         // Handle successful submission
       } else {
         print("Form submission unsuccessful : ${response.statusCode}");
-
         // Handle unsuccessful submission
       }
     }

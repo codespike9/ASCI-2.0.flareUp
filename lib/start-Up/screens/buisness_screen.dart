@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_flareup/start-Up/models/buisness_company.dart';
 import 'package:flutter_flareup/start-Up/screens/buisness_form.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class BuisnessScreen extends StatefulWidget {
   const BuisnessScreen({super.key});
@@ -11,6 +13,38 @@ class BuisnessScreen extends StatefulWidget {
 
 class _BuisnessScreenState extends State<BuisnessScreen> {
   List<BusinessFormData> submittedBusinesses = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchData();
+  }
+
+  Future<void> _fetchData() async {
+    try {
+      final response = await http.get(
+        Uri.parse('http://dharmarajjena.pythonanywhere.com/api/company/'),
+      );
+
+      print(response.body);
+
+      if (response.statusCode == 200) {
+        final List<dynamic> data = json.decode(response.body);
+        final List<BusinessFormData> businesses = data.map((item) {
+          return BusinessFormData.fromJson(item);
+        }).toList();
+
+        setState(() {
+          submittedBusinesses = businesses;
+        });
+      } else {
+        print('Failed to fetch data : ${response.statusCode}');
+      }
+    } catch (error) {
+      print('Error fetching data: $error');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,9 +67,7 @@ class _BuisnessScreenState extends State<BuisnessScreen> {
 
           if (newBusiness != null && newBusiness is BusinessFormData) {
             // Add the submitted business to the list
-            setState(() {
-              submittedBusinesses.add(newBusiness);
-            });
+            _fetchData(); // Refresh the data list
           }
         },
         child: const Icon(Icons.add),
