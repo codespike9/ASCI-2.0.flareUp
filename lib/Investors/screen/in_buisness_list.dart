@@ -1,27 +1,37 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_flareup/Investors/models/Investor_buisness.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import '../widget/buisnesscard.dart';
+
 class BuisnessList extends StatefulWidget {
-  const BuisnessList({super.key});
+  const BuisnessList({super.key, required this.authToken});
   static const String routeName = '/investor-buisness-list';
+  final String authToken;
 
   @override
   State<BuisnessList> createState() => _BuisnessListState();
 }
 
 class _BuisnessListState extends State<BuisnessList> {
-  List<BusinessModel> businessList = [];
+  List<InvestorBusiness> businessList = [];
+  RangeValues valuationRange = RangeValues(0, 100);
 
   @override
   void initState() {
     super.initState();
+
     _fetchBusinessData();
   }
 
   Future<void> _fetchBusinessData() async {
+    final authToken = widget.authToken;
     final response = await http.get(
       Uri.parse('http://dharmarajjena.pythonanywhere.com/api/companyList/'),
+      headers: {
+        'Authorization': 'Token $authToken', // Use the authToken here
+      },
     );
 
     print(response.body);
@@ -32,12 +42,23 @@ class _BuisnessListState extends State<BuisnessList> {
 
       setState(() {
         businessList = businessDataList.map((data) {
-          return BusinessModel.fromJson(data);
+          return InvestorBusiness.fromJson(data);
         }).toList();
       });
     } else {
       print('Failed to fetch data');
     }
+  }
+
+   void filterBusinessesByValuation() {
+    setState(() {
+      // Apply the valuation filter
+      businessList = businessList.where((business) {
+        final valuation = double.parse(business.valuation.toString());
+        return valuation >= valuationRange.start &&
+            valuation <= valuationRange.end;
+      }).toList();
+    });
   }
 
   @override
@@ -46,30 +67,24 @@ class _BuisnessListState extends State<BuisnessList> {
       appBar: AppBar(
         title: const Text('Business List'),
       ),
-      body: ListView.builder(
-        itemCount: businessList.length,
-        itemBuilder: (context, index) {
-          final business = businessList[index];
-          return ListTile(
-            title: Text(business.companyName),
-            // You can customize the tile appearance here
-          );
-        },
-      ),
-    );
-  }
-}
-
-class BusinessModel {
-  final String companyName;
-
-  BusinessModel({
-    required this.companyName,
-  });
-
-  factory BusinessModel.fromJson(Map<String, dynamic> json) {
-    return BusinessModel(
-      companyName: json['companyName'],
+      body: Container(
+          decoration: const BoxDecoration(
+            gradient: RadialGradient(
+              colors: [
+                Color.fromARGB(242, 193, 228, 244),
+                Color.fromARGB(255, 252, 252, 252)
+              ],
+              center: Alignment.topLeft,
+              radius: 1.2,
+            ),
+          ),
+          child: ListView.builder(
+            itemCount: businessList.length,
+            itemBuilder: (context, index) {
+              final business = businessList[index];
+              return BusinessCard(business: business);
+            },
+          )),
     );
   }
 }

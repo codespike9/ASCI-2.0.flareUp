@@ -1,15 +1,23 @@
+import 'dart:convert';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/user.dart';
 
 final authService = Provider<AuthService>((ref) => AuthService());
 
+final startuptokenProvider = FutureProvider<String>((ref) async {
+  final prefs = await SharedPreferences.getInstance();
+  return prefs.getString('token') ?? '';
+});
+
 class AuthService {
   final String apiUrl = 'http://dharmarajjena.pythonanywhere.com/api/';
 
-  Future<void> signUp(
-      User user, Function onSignUpSuccess, Function onSignUpFailure) async {
+  Future<void> signUp(CompanyUser user, Function onSignUpSuccess,
+      Function onSignUpFailure) async {
     final response = await http.post(
       Uri.parse('$apiUrl/register_as_company_manager/'),
       body: {
@@ -45,13 +53,8 @@ class AuthService {
 
   Future<void> signIn(String username, String password,
       Function onSignInSuccess, Function onSignInFailure) async {
-    final headers = {
-      'Access-Control-Allow-Credentials': 'true', 
-    };
-
     final response = await http.post(
       Uri.parse('$apiUrl/loginAsCompanyManager/'),
-      headers: headers,
       body: {
         'username': username,
         'password': password,
@@ -59,13 +62,22 @@ class AuthService {
     );
 
     if (response.statusCode == 201) {
-      // Login successful
       print('Login Successful');
+      final responseData = json.decode(response.body);
+      final token = responseData['token'];
+      print(token);
+      await _saveToken(token);
+
       onSignInSuccess();
     } else {
       // Handle login error
       print('Login Error: ${response.body}');
       onSignInFailure();
     }
+  }
+
+  Future<void> _saveToken(String token) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('token', token);
   }
 }

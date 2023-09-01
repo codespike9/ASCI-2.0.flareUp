@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_flareup/Investors/screen/in_buisness_list.dart';
 
@@ -6,6 +8,7 @@ import 'package:flutter_flareup/Investors/screen/signup_screen.dart';
 import 'package:flutter_flareup/Investors/widget/custom_textfield.dart';
 import 'package:http/http.dart' as http;
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -36,9 +39,16 @@ class _LoginScreenState extends State<LoginScreen> {
     final response = await http.post(Uri.parse(apiUrl), body: requestBody);
 
     if (response.statusCode == 201) {
-      print("Login Succesful");
+      final responseData = json.decode(response.body);
+      final token = responseData['token'];
+
+      final prefs = await SharedPreferences.getInstance();
+      prefs.setString('authToken', token);
+      print("Login Successful, Token: $token");
+
+      // Pass user data while navigating to BuisnessList screen
       // ignore: use_build_context_synchronously
-      Navigator.pushNamed(context, BuisnessList.routeName);
+      Navigator.pushNamed(context, BuisnessList.routeName, arguments: token);
     } else {
       // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(

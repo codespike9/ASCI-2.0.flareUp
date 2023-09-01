@@ -436,7 +436,7 @@ class _BuisnessSigninScreenState extends ConsumerState<BuisnessSigninScreen> {
               left: 75,
               child: ElevatedButton(
                 onPressed: () async {
-                  final user = User(
+                  final user = CompanyUser(
                     username: _usernameController.text,
                     email: _emailController.text,
                     password: _passwordController.text,
@@ -452,6 +452,7 @@ class _BuisnessSigninScreenState extends ConsumerState<BuisnessSigninScreen> {
                     city: _citynameController.text,
                     officeAddress: _officeaddController.text,
                     officePincode: int.parse(_officepinController.text),
+                    token: '',
                   );
                   final authServiceInstance = ref.read(authService);
                   await authServiceInstance.signUp(

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_flareup/Investors/models/Investor_buisness.dart';
 import 'package:flutter_flareup/Investors/screen/in_buisness_details.dart';
 import 'package:flutter_flareup/Investors/screen/in_buisness_list.dart';
+import 'package:flutter_flareup/Investors/screen/in_buisnessdetails.dart';
 
 import 'package:flutter_flareup/Investors/screen/login_screen.dart';
 import 'package:flutter_flareup/Investors/screen/signup_screen.dart';
@@ -54,10 +56,19 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
         builder: (_) => const BuisnessFormScreen(),
       );
 
-      case BuisnessList.routeName:
+    case BuisnessList.routeName:
       return MaterialPageRoute(
         settings: routeSettings,
-        builder: (_) => const BuisnessList(),
+        builder: (_) =>
+            BuisnessList(authToken: routeSettings.arguments as String),
+      );
+
+    case BuisnessDetails.routeName:
+      return MaterialPageRoute(
+        settings: routeSettings,
+        builder: (_) => BuisnessDetails(
+          business: routeSettings.arguments as InvestorBusiness,
+        ),
       );
 
     default:

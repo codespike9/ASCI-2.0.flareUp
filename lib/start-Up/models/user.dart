@@ -1,4 +1,4 @@
-class User {
+class CompanyUser {
   final String username;
   final String email;
   final String password;
@@ -14,8 +14,10 @@ class User {
   final String city;
   final String officeAddress;
   final int officePincode;
+  final String token;
 
-  User({
+  CompanyUser({
+    required this.token,
     required this.username,
     required this.email,
     required this.password,
@@ -32,5 +34,26 @@ class User {
     required this.officeAddress,
     required this.officePincode,
   });
+
+  Map<String, dynamic> toJson() {
+    return {
+      'token': token,
+      'username': username,
+      'email': email,
+      'password': password,
+      'name': name,
+      'dob': dob,
+      'age': age,
+      'gender': gender,
+      'phoneNo': phoneNo,
+      'officeNo': officeNo,
+      'foco': foco,
+      'designation': designation,
+      'state': state,
+      'city': city,
+      'officeAddress': officeAddress,
+      'officePincode': officePincode,
+    };
+  }
 }
 

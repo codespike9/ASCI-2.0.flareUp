@@ -4,7 +4,7 @@ import '../models/in_buisness_model.dart';
 class BusinessDetailsScreen extends StatefulWidget {
   const BusinessDetailsScreen(this.business, {super.key});
   final BusinessModel business;
-  static const String routeName = '/investor-buisness-details';
+  static const String routeName = '/investor-buisness-details2';
 
   @override
   _BusinessDetailsScreenState createState() => _BusinessDetailsScreenState();
@@ -89,7 +89,8 @@ class _BusinessDetailsScreenState extends State<BusinessDetailsScreen> {
                           boxShadow: [
                             BoxShadow(
                               color: Colors.grey[300]!, // Shadow color
-                              offset: const Offset(0, 2), // Offset of the shadow
+                              offset:
+                                  const Offset(0, 2), // Offset of the shadow
                               blurRadius: 4, // Blur radius of the shadow
                             ),
                           ],

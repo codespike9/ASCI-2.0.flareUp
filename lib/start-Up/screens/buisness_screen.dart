@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_flareup/start-Up/models/buisness_company.dart';
 import 'package:flutter_flareup/start-Up/screens/buisness_form.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-class BuisnessScreen extends StatefulWidget {
+import '../services/startup_auth.service.dart';
+
+class BuisnessScreen extends ConsumerStatefulWidget {
   const BuisnessScreen({super.key});
   static const String routeName = '/buisness-startup-screen';
   @override
-  State<BuisnessScreen> createState() => _BuisnessScreenState();
+  ConsumerState<BuisnessScreen> createState() => _BuisnessScreenState();
 }
 
-class _BuisnessScreenState extends State<BuisnessScreen> {
+class _BuisnessScreenState extends ConsumerState<BuisnessScreen> {
   List<BusinessFormData> submittedBusinesses = [];
 
   @override
@@ -22,8 +25,12 @@ class _BuisnessScreenState extends State<BuisnessScreen> {
 
   Future<void> _fetchData() async {
     try {
+      final token = ref.watch(startuptokenProvider);
       final response = await http.get(
         Uri.parse('http://dharmarajjena.pythonanywhere.com/api/company/'),
+        headers: {
+          'Authorization': 'Token $token',
+        },
       );
 
       print(response.body);
