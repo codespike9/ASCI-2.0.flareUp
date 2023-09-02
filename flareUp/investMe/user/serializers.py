@@ -21,4 +21,3 @@ class CompanyManagerProfileSerializer(serializers.ModelSerializer):
 class CompanyManagaerLoginSerializer(serializers.Serializer):
     username= serializers.CharField()
     password=serializers.CharField()
-

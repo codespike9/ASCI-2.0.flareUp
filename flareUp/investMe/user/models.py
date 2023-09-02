@@ -4,7 +4,15 @@ from datetime import date
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
+import secrets
+
+
+
+
 class CompanyManagerProfile(models.Model):
+
+
+
     username=models.CharField(max_length=100)
     email=models.EmailField(max_length=200)
     password=models.CharField(max_length=200)
@@ -20,6 +28,7 @@ class CompanyManagerProfile(models.Model):
     city=models.CharField(max_length=255)
     office_address=models.TextField()
     office_pincode=models.IntegerField()
+    token = models.CharField(max_length=100,blank=True)
 
     def __str__(self):
         return self.username

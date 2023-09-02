@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator,MaxValueValidator
 from user.models import CompanyManagerProfile
 PERCENTAGE_VALIDATOR= [MinValueValidator(0),MaxValueValidator(100)]
@@ -33,13 +34,13 @@ class Company(models.Model):
     last_month_revenue=models.FloatField()
     second_last_month_revenue=models.FloatField()
     third_last_month_revenue=models.FloatField()
-    last_year_revenue=models.FloatField(null=True,blank=True)
+    last_year_revenue=models.FloatField(null=True,blank=True,default=0)
     raising_amount=models.FloatField(null=True,blank=True)
     equity=models.DecimalField(max_digits=3,decimal_places=0,validators=PERCENTAGE_VALIDATOR)
     valuation=models.FloatField(null=True,blank=True)
     quantity_available=models.IntegerField(null=True,blank=True,default=100)
     valid=models.BooleanField(default=False,blank=True)
-    image = models.ImageField(upload_to='cover_images',null=True,blank=True)
+    image = models.ImageField(null=True,blank=True,upload_to="cover_images")
 
     def __str__(self):
         return self.companyName
@@ -62,3 +63,16 @@ class Company(models.Model):
     #     self.user=data
     #     print(self.user)
     #     super(Company, self).save(*args, **kwargs)
+
+
+class Investor_To_Company_Bank_Details(models.Model):
+
+    investor=models.ForeignKey(User,on_delete=models.DO_NOTHING)
+    IFSC_code=models.CharField(max_length=100)
+    ACC_no=models.CharField(max_length=100)
+    equity=models.DecimalField(max_digits=4,decimal_places=2,validators=PERCENTAGE_VALIDATOR,blank=True,null=True)
+    company=models.ForeignKey(Company,on_delete=models.DO_NOTHING,blank=True,null=True)
+    def __str__(self):
+        return self.investor.first_name
+    class Meta:
+        verbose_name_plural="Investor_To_Company_Bank_Details"

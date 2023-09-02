@@ -12,7 +12,10 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login,logout
 from django.views.decorators.cache import never_cache
 from django.middleware.csrf import get_token
+import secrets
 
+def generate_token():
+    return secrets.token_urlsafe(32)  # Generates a URL-safe token of length 32
 
 
 @api_view(['GET'])
@@ -28,9 +31,12 @@ class companyManagaerProfileRegister(viewsets.ModelViewSet):
     serializer_class = CompanyManagerProfileSerializer
     http_method_names = ['post']
 
-class CompanyManagaerLoginAPI(APIView):
-
-    def post(self,request):
+    
+class CompanyManagaerLoginAPI(viewsets.ModelViewSet):
+    queryset = CompanyManagerProfile.objects.all()
+    serializer_class = CompanyManagaerLoginSerializer
+    http_method_names = ['post']
+    def create(self,request):
         data=request.data
         serializer=CompanyManagaerLoginSerializer(data=data)
         if not serializer.is_valid():
@@ -39,19 +45,32 @@ class CompanyManagaerLoginAPI(APIView):
                 'message':serializer.errors
             },status.HTTP_400_BAD_REQUEST)
         
-        user=CompanyManagerProfile.objects.all()
-        for user in user:
+        print(serializer.data['username'])
+        print(serializer.data['password'])
+        users=CompanyManagerProfile.objects.all()
+        for user in users:
             if user.username == serializer.data['username'] and user.password == serializer.data['password']:
-                # token, _= Token.objects.get_or_create(user=user)
-                request.session['logged_in'] = True
+                print(user.id)
+                profile = CompanyManagerProfile.objects.get(id=user.id)
+                profile.token = generate_token()
+                profile.save()
+                
+                # login(request, user)
+
                 request.session['user']=user.id
                 request.session['email']=user.email
-                return Response({'status':True,'message':'user login'},status.HTTP_201_CREATED)
+
+                return Response({'status':True,'message':'user login','token':profile.token},status.HTTP_201_CREATED)
         return Response({
             'status':False,
             'message':'Invalid Credentials'
         },status.HTTP_400_BAD_REQUEST)
-    
+
+
+
+
+
+
 
 @never_cache
 def signin(request):

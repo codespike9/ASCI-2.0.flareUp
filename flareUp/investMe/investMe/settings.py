@@ -23,14 +23,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-j0#ylebsaxt0z4%n_v4*dzb*p7ol5)!$m+vqvb-%@(h-+8fh7^'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['localhost','DharmarajJena.pythonanywhere.com']
+ALLOWED_HOSTS = ['localhost','DharmarajJena.pythonanywhere.com','*']
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    'corsheaders',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -40,11 +41,13 @@ INSTALLED_APPS = [
     'company',
     'api',
     'user',
+    'investor',
     'rest_framework',
     'rest_framework.authtoken'
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -54,7 +57,13 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
 ]
+# CORS_ALLOWED_ORIGINS = [
+#     # "http://dharmarajjena.pythonanywhere.com/",
+#     # Add more allowed origins as needed
+# ]
 
+# CORS_ALLOW_CREDENTIALS = True
+# CORS_ALLOW_ALL_ORIGIN= True
 ROOT_URLCONF = 'investMe.urls'
 
 TEMPLATES = [
@@ -160,3 +169,6 @@ EMAIL_HOST_PASSWORD="sfumigyopzqibmvm"
 EMAIL_USE_TLS=True
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 
+
+KEY='rzp_test_84QavGB6R6hnD9'
+SECRET='PWGYJXE2ACiC00aUSgAvaSg2'

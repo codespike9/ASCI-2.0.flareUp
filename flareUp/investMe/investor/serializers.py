@@ -1,6 +1,11 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from company.models import Company
+
+from django.core.validators import MinValueValidator,MaxValueValidator
+from user.models import CompanyManagerProfile
+PERCENTAGE_VALIDATOR= [MinValueValidator(0),MaxValueValidator(100)]
+
 class InvestorLoginSerializer(serializers.Serializer):
         username= serializers.CharField()
         password=serializers.CharField()
@@ -21,7 +26,7 @@ class RegisterSerializer(serializers.ModelSerializer):
         return data
     
     def create(self, validated_data):
-        user=User.objects.create(username=validated_data['username'],email=validated_data['email'])
+        user=User.objects.create(username=validated_data['username'],email=validated_data['email'],first_name=validated_data['first_name'],last_name=validated_data['last_name'])
         user.set_password(validated_data['password'])
         user.save()
         return validated_data 
@@ -36,5 +41,13 @@ class CompanyListSerializer(serializers.ModelSerializer):
 
 class InvestmentSummarySerializer(serializers.Serializer):
      
-     equity=serializers.IntegerField()
-     id=serializers.IntegerField()
+    equity=serializers.FloatField()
+    id=serializers.IntegerField()
+
+
+class PaymentSerializer(serializers.Serializer):
+    equity_purchased=serializers.FloatField()
+    payment_id=serializers.CharField()
+    price_paid=serializers.FloatField()
+    company=serializers.IntegerField()
+
