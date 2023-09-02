@@ -1,6 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_flareup/Investors/screen/paymentpage.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../models/Investor_buisness.dart';
+import 'package:http/http.dart' as http;
 
 class BuisnessDetails extends StatefulWidget {
   const BuisnessDetails({super.key, required this.business});
@@ -13,6 +17,13 @@ class BuisnessDetails extends StatefulWidget {
 
 class _BuisnessDetailsState extends State<BuisnessDetails> {
   double equityToBuy = 0.0;
+
+  final TextEditingController _equityController = TextEditingController();
+
+  void dispose() {
+    _equityController.dispose();
+    super.dispose();
+  }
 
   double calculateInvestmentAmount() {
     return (widget.business.valuation / 100) * equityToBuy;
@@ -34,6 +45,52 @@ class _BuisnessDetailsState extends State<BuisnessDetails> {
       await launch(pdfUrl, forceWebView: true);
     } else {
       throw 'Could not launch $pdfUrl';
+    }
+  }
+
+  Future<void> postDataToAPI() async {
+    final companyId =
+        widget.business.id.toString(); // Convert company id to a string
+    final equity = _equityController.text; // Get the value from the controller
+
+    // Create the request body as a Map
+    final Map<String, dynamic> requestBody = {
+      'id': companyId,
+      'equity': equity,
+    };
+
+    final response = await http.post(
+      Uri.parse(
+          'http://dharmarajjena.pythonanywhere.com/api/InvestmentSummary/'),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: json.encode(requestBody), // Encode the request body as JSON
+    );
+
+    if (response.statusCode == 201) {
+      final jsonData = json.decode(response.body);
+      var chosenEquity = jsonData['choosen_equity'];
+      var equivalentPrice = jsonData['equivalent_price'];
+      var investedCompanyId = jsonData['company_id'];
+      var paymentId = jsonData['payment']['id'];
+
+      // ignore: use_build_context_synchronously
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => PaymentPage(
+            choosenEquity: chosenEquity,
+            equivalentPrice: equivalentPrice,
+            companyId: investedCompanyId,
+            paymentId: paymentId,
+          ),
+        ),
+      );
+      // print(response.body);
+      print('posted data sucesfully');
+    } else {
+      throw Exception('Failed to post data to the API ${response.statusCode}');
     }
   }
 
@@ -81,11 +138,21 @@ class _BuisnessDetailsState extends State<BuisnessDetails> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
+                        const Text(
+                          'Main Information',
+                          style: TextStyle(
+                            fontSize: 18,
+                            decoration: TextDecoration.underline,
+                            color: Colors.black,
+                            fontWeight: FontWeight.w900,
+                          ),
+                        ),
+                        const SizedBox(height: 12),
                         Text(
                           'Company Name: ${widget.business.companyName}',
                           style: const TextStyle(
                             fontSize: 18,
-                            fontWeight: FontWeight.bold,
+                            fontWeight: FontWeight.w500,
                           ),
                         ),
                         const SizedBox(height: 12),
@@ -150,53 +217,83 @@ class _BuisnessDetailsState extends State<BuisnessDetails> {
                   const SizedBox(height: 12),
                   Container(
                     width: MediaQuery.of(context).size.width - 10,
-                    padding:
-                        const EdgeInsets.all(16.0), // Add padding for spacing
+                    padding: const EdgeInsets.all(16.0),
                     decoration: BoxDecoration(
                       gradient: const LinearGradient(
                         colors: [
                           Color.fromARGB(184, 201, 240, 236),
-                          Color.fromARGB(219, 255, 255, 255)
+                          Color.fromARGB(219, 255, 255, 255),
                         ],
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
                       ),
                       border: Border.all(
-                        color: Colors.grey, // Border color
-                        width: 1.0, // Border width
+                        color: Colors.grey,
+                        width: 1.0,
                       ),
-                      borderRadius:
-                          BorderRadius.circular(8.0), // Rounded corners
+                      borderRadius: BorderRadius.circular(8.0),
                     ),
                     child: Column(
                       children: [
                         InkWell(
                           onTap: () {
-                            _launchURL(widget
-                                .business.link); // Open the URL when tapped
+                            _launchURL(widget.business.link);
                           },
-                          child: Text(
-                            ' ${widget.business.link}',
-                            style: const TextStyle(
-                              fontSize: 16,
-                              decoration: TextDecoration.underline,
-                              color: Colors.blue, // Make it look like a link
-                            ),
+                          child: Column(
+                            children: [
+                              const Text(
+                                'Weblink',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color:
+                                      Colors.black, // Set text color to black
+                                  fontWeight: FontWeight
+                                      .w400, // You can set a bold font weight if needed
+                                ),
+                              ),
+                              const SizedBox(
+                                  height:
+                                      4), // Add spacing between "Weblink" and the link
+                              Text(
+                                widget.business.link,
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  decoration: TextDecoration.underline,
+                                  color: Colors.blue,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                         const SizedBox(height: 12),
                         InkWell(
                           onTap: () {
-                            _launchPDF(widget
-                                .business.abstract); // Open the PDF when tapped
+                            _launchPDF(widget.business.abstract);
                           },
-                          child: Text(
-                            ' ${widget.business.abstract}',
-                            style: const TextStyle(
-                              fontSize: 16,
-                              decoration: TextDecoration.underline,
-                              color: Colors.blue, // Make it look like a link
-                            ),
+                          child: Column(
+                            children: [
+                              const Text(
+                                'Abstract',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color:
+                                      Colors.black, // Set text color to black
+                                  fontWeight: FontWeight
+                                      .w400, // You can set a bold font weight if needed
+                                ),
+                              ),
+                              const SizedBox(
+                                  height:
+                                      4), // Add spacing between "Abstract" and the link
+                              Text(
+                                '${widget.business.abstract}',
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  decoration: TextDecoration.underline,
+                                  color: Colors.blue,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ],
@@ -225,6 +322,16 @@ class _BuisnessDetailsState extends State<BuisnessDetails> {
                     ),
                     child: Column(
                       children: [
+                        const Text(
+                          'Finance Information',
+                          style: TextStyle(
+                            fontSize: 18,
+                            decoration: TextDecoration.underline,
+                            color: Colors.black,
+                            fontWeight: FontWeight.w900,
+                          ),
+                        ),
+                        const SizedBox(height: 12),
                         Text(
                           'Last Month Revenue: ${widget.business.lastMonthRevenue}',
                           style: const TextStyle(
@@ -318,6 +425,7 @@ class _BuisnessDetailsState extends State<BuisnessDetails> {
                               horizontal: 16.0,
                             ),
                           ),
+                          controller: _equityController,
                           keyboardType: TextInputType.number,
                           onChanged: (value) {
                             setState(() {
@@ -338,6 +446,36 @@ class _BuisnessDetailsState extends State<BuisnessDetails> {
                     ),
                   ),
                 ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 3),
+              child: ElevatedButton(
+                onPressed: () {
+                  postDataToAPI();
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color.fromARGB(229, 56, 169, 60),
+                  foregroundColor: Colors.white, // Set background color
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 4, horizontal: 28),
+                ),
+                child: const Text('Invest'),
+              ),
+            ),
+            const SizedBox(height: 10),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 3),
+              child: TextButton(
+                onPressed: () {
+                  // Implement Learn More functionality here
+                },
+                style: TextButton.styleFrom(
+                  backgroundColor: const Color.fromARGB(227, 181, 179, 179),
+                  foregroundColor: const Color.fromARGB(222, 2, 2, 2),
+                  // Set background color
+                ),
+                child: const Text('Learn More'),
               ),
             ),
           ],

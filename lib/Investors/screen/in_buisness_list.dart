@@ -16,12 +16,14 @@ class BuisnessList extends StatefulWidget {
 
 class _BuisnessListState extends State<BuisnessList> {
   List<InvestorBusiness> businessList = [];
-  RangeValues valuationRange = RangeValues(0, 100);
+  List<InvestorBusiness> originalBusinessList = [];
+
+  RangeValues valuationRange =
+      const RangeValues(100000, 2000000); // 1 lakh to 20 lakh
 
   @override
   void initState() {
     super.initState();
-
     _fetchBusinessData();
   }
 
@@ -30,7 +32,7 @@ class _BuisnessListState extends State<BuisnessList> {
     final response = await http.get(
       Uri.parse('http://dharmarajjena.pythonanywhere.com/api/companyList/'),
       headers: {
-        'Authorization': 'Token $authToken', // Use the authToken here
+        'Authorization': 'Token $authToken',
       },
     );
 
@@ -44,20 +46,87 @@ class _BuisnessListState extends State<BuisnessList> {
         businessList = businessDataList.map((data) {
           return InvestorBusiness.fromJson(data);
         }).toList();
+        // Create a copy of the original list for resetting the filter
+        originalBusinessList = List<InvestorBusiness>.from(businessList);
       });
     } else {
       print('Failed to fetch data');
     }
   }
 
-   void filterBusinessesByValuation() {
+  Future<void> _showFilterDialog() async {
+    RangeValues newRange = valuationRange;
+
+    await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Filter by Valuation'),
+          content: StatefulBuilder(
+            builder: (BuildContext context, StateSetter setState) {
+              return Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  RangeSlider(
+                    values: newRange,
+                    min: 100000,
+                    max: 2000000,
+                    divisions: 100,
+                    onChanged: (RangeValues values) {
+                      setState(() {
+                        newRange = values;
+                      });
+                    },
+                  ),
+                  Text('Valuation Range: ${newRange.start} - ${newRange.end}'),
+                ],
+              );
+            },
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                setState(() {
+                  valuationRange = newRange;
+                });
+                filterBusinessesByValuation();
+                Navigator.of(context).pop();
+              },
+              child: const Text('Apply Filter'),
+            ),
+            TextButton(
+              onPressed: () {
+                resetFilter();
+                Navigator.of(context).pop();
+              },
+              child: const Text('Reset Filter'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void filterBusinessesByValuation() {
     setState(() {
-      // Apply the valuation filter
-      businessList = businessList.where((business) {
+      businessList = originalBusinessList.where((business) {
         final valuation = double.parse(business.valuation.toString());
         return valuation >= valuationRange.start &&
             valuation <= valuationRange.end;
       }).toList();
+    });
+  }
+
+  void resetFilter() {
+    setState(() {
+      businessList = List<InvestorBusiness>.from(originalBusinessList);
+      valuationRange = const RangeValues(100000, 2000000);
     });
   }
 
@@ -68,23 +137,30 @@ class _BuisnessListState extends State<BuisnessList> {
         title: const Text('Business List'),
       ),
       body: Container(
-          decoration: const BoxDecoration(
-            gradient: RadialGradient(
-              colors: [
-                Color.fromARGB(242, 193, 228, 244),
-                Color.fromARGB(255, 252, 252, 252)
-              ],
-              center: Alignment.topLeft,
-              radius: 1.2,
-            ),
+        decoration: const BoxDecoration(
+          gradient: RadialGradient(
+            colors: [
+              Color.fromARGB(242, 193, 228, 244),
+              Color.fromARGB(255, 252, 252, 252),
+            ],
+            center: Alignment.topLeft,
+            radius: 1.2,
           ),
-          child: ListView.builder(
-            itemCount: businessList.length,
-            itemBuilder: (context, index) {
-              final business = businessList[index];
-              return BusinessCard(business: business);
-            },
-          )),
+        ),
+        child: ListView.builder(
+          itemCount: businessList.length,
+          itemBuilder: (context, index) {
+            final business = businessList[index];
+            return BusinessCard(business: business);
+          },
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          _showFilterDialog();
+        },
+        child: const Icon(Icons.filter_list),
+      ),
     );
   }
 }

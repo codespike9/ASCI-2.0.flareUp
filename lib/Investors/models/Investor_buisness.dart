@@ -1,4 +1,5 @@
 class InvestorBusiness {
+  final int id;
   final dynamic user;
   final String businessStage;
   final String industryCategory;
@@ -19,6 +20,7 @@ class InvestorBusiness {
   final int category;
 
   InvestorBusiness({
+    required this.id,
     required this.user,
     required this.businessStage,
     required this.industryCategory,
@@ -59,6 +61,7 @@ class InvestorBusiness {
       valid: json['valid'],
       image: json['image'],
       category: json['category'],
+      id: json['id'],
     );
   }
 
@@ -82,6 +85,7 @@ class InvestorBusiness {
       'valid': valid,
       'image': image,
       'category': category,
+      'id': id,
     };
   }
 }

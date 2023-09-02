@@ -5,6 +5,7 @@ import 'package:flutter_flareup/Investors/screen/in_buisness_list.dart';
 import 'package:flutter_flareup/Investors/screen/in_buisnessdetails.dart';
 
 import 'package:flutter_flareup/Investors/screen/login_screen.dart';
+import 'package:flutter_flareup/Investors/screen/paymentpage.dart';
 import 'package:flutter_flareup/Investors/screen/signup_screen.dart';
 import 'package:flutter_flareup/Investors/screen/tabscreen.dart';
 import 'package:flutter_flareup/Investors/models/in_buisness_model.dart';
@@ -71,6 +72,7 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
         ),
       );
 
+    
     default:
       return MaterialPageRoute(
         settings: routeSettings,
