@@ -1,10 +1,10 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_flareup/Investors/screen/in_buisness_list.dart';
 
 import 'package:flutter_flareup/Investors/screen/signup_screen.dart';
-//import 'package:flutter_flareup/Investors/screen/tabscreen.dart';
+import 'package:flutter_flareup/Investors/screen/tabscreen.dart';
+
 import 'package:flutter_flareup/Investors/widget/custom_textfield.dart';
 import 'package:http/http.dart' as http;
 import 'package:google_fonts/google_fonts.dart';
@@ -48,7 +48,12 @@ class _LoginScreenState extends State<LoginScreen> {
 
       // Pass user data while navigating to BuisnessList screen
       // ignore: use_build_context_synchronously
-      Navigator.pushNamed(context, BuisnessList.routeName, arguments: token);
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => InvestorTabScreen(authToken: token),
+        ),
+      );
     } else {
       // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(

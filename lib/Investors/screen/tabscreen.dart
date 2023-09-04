@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_flareup/Investors/pages/blog_page.dart';
-import 'package:flutter_flareup/Investors/pages/home_page.dart';
-import 'package:flutter_flareup/Investors/pages/your_investment.dart';
-import 'package:flutter_flareup/Investors/data/in_business_data.dart';
+//import 'package:flutter_flareup/Investors/pages/home_page.dart';
+import 'package:flutter_flareup/Investors/pages/profile_page.dart';
+//import 'package:flutter_flareup/Investors/data/in_business_data.dart';
+import 'package:flutter_flareup/Investors/screen/in_buisness_list.dart';
 
 class InvestorTabScreen extends StatefulWidget {
-  const InvestorTabScreen({super.key});
+  const InvestorTabScreen({super.key, required this.authToken});
+  final String authToken;
   static const String routeName = '/investor-tab-screen';
 
   @override
@@ -14,14 +16,19 @@ class InvestorTabScreen extends StatefulWidget {
 
 class _InvestorTabScreenState extends State<InvestorTabScreen> {
   int _currentIndex = 0;
+  late List<Widget> _pages;
 
-  final List<Widget> _pages = [
-    HomePage(
-      business: dummyBusinessData,
-    ),
-    const BlogPage(),
-    const YourInvestmentPage(),
-  ];
+  @override
+  void initState() {
+    super.initState();
+
+    // Assign the list of pages to the existing _pages variable
+    _pages = [
+      BuisnessList(authToken: widget.authToken),
+      const BlogPage(),
+      const YourInvestmentPage(),
+    ];
+  }
 
   void _onTabTapped(int index) {
     setState(() {
@@ -41,7 +48,7 @@ class _InvestorTabScreenState extends State<InvestorTabScreen> {
         onTap: _onTabTapped,
         items: const [
           BottomNavigationBarItem(
-            icon: Icon(Icons.layers),
+            icon: Icon(Icons.business_rounded),
             label: 'Home',
           ),
           BottomNavigationBarItem(
@@ -50,7 +57,7 @@ class _InvestorTabScreenState extends State<InvestorTabScreen> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person_2),
-            label: 'Y-Invest',
+            label: 'Profile',
           ),
         ],
       ),

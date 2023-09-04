@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
+import 'package:flutter_flareup/start-Up/screens/buisness_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -8,10 +10,10 @@ import '../models/user.dart';
 
 final authService = Provider<AuthService>((ref) => AuthService());
 
-final startuptokenProvider = FutureProvider<String>((ref) async {
+/*final startuptokenProvider = FutureProvider<String>((ref) async {
   final prefs = await SharedPreferences.getInstance();
-  return prefs.getString('token') ?? '';
-});
+  return prefs.getString('Token') ?? '';
+});*/
 
 class AuthService {
   final String apiUrl = 'http://dharmarajjena.pythonanywhere.com/api/';
@@ -51,8 +53,12 @@ class AuthService {
     }
   }
 
-  Future<void> signIn(String username, String password,
-      Function onSignInSuccess, Function onSignInFailure) async {
+  Future<void> signIn(
+    String username,
+    String password,
+    Function onSignInSuccess,
+    Function onSignInFailure,
+  ) async {
     final response = await http.post(
       Uri.parse('$apiUrl/loginAsCompanyManager/'),
       body: {
@@ -62,13 +68,16 @@ class AuthService {
     );
 
     if (response.statusCode == 201) {
-      print('Login Successful');
+      //print('Login Successful');
+      //print(response.body);
       final responseData = json.decode(response.body);
       final token = responseData['token'];
-      print(token);
-      await _saveToken(token);
-
-      onSignInSuccess();
+      //print(token);
+      //await _saveToken(token);
+      final prefs = await SharedPreferences.getInstance();
+      prefs.setString('authToken', token);
+      print("Login Successful, Token: $token");
+      onSignInSuccess(token);
     } else {
       // Handle login error
       print('Login Error: ${response.body}');
@@ -76,8 +85,8 @@ class AuthService {
     }
   }
 
-  Future<void> _saveToken(String token) async {
+  /*Future<void> _saveToken(String token) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString('token', token);
-  }
+    await prefs.setString('Token', token);
+  }*/
 }

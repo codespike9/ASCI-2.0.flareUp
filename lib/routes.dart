@@ -27,11 +27,11 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
         builder: (_) => const SignUpScreen(),
       );
 
-    case InvestorTabScreen.routeName:
+    /*case InvestorTabScreen.routeName:
       return MaterialPageRoute(
         settings: routeSettings,
-        builder: (_) => const InvestorTabScreen(),
-      );
+        builder: (_) => const InvestorTabScreen(authToken: ),
+      );*/
 
     /*case BusinessDetailsScreen.routeName:
       final businessData = routeSettings.arguments as BusinessModel;
@@ -45,16 +45,17 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
         builder: (_) => const BuisnessSigninScreen(),
       );
 
-    case BuisnessScreen.routeName:
+    /*case BuisnessScreen.routeName:
       return MaterialPageRoute(
         settings: routeSettings,
         builder: (_) => const BuisnessScreen(),
-      );
+      );*/
 
     case BuisnessFormScreen.routeName:
       return MaterialPageRoute(
         settings: routeSettings,
-        builder: (_) => const BuisnessFormScreen(),
+        builder: (_) =>
+            BuisnessFormScreen(authToken: routeSettings.arguments as String),
       );
 
     case BuisnessList.routeName:
@@ -72,7 +73,6 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
         ),
       );
 
-    
     default:
       return MaterialPageRoute(
         settings: routeSettings,

@@ -47,8 +47,13 @@ class _BuisnessSigninScreenState extends ConsumerState<BuisnessSigninScreen> {
     showSnackbar(context, 'Login failed. Please check your credentials.');
   }
 
-  void onSignInSuccess() {
-    Navigator.pushNamed(context, BuisnessScreen.routeName);
+  void onSignInSuccess(String token) {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => BuisnessScreen(authToken: token),
+      ),
+    );
   }
 
   final TextEditingController _usernameController = TextEditingController();

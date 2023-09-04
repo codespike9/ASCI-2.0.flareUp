@@ -8,7 +8,8 @@ import 'dart:convert';
 import '../services/startup_auth.service.dart';
 
 class BuisnessScreen extends ConsumerStatefulWidget {
-  const BuisnessScreen({super.key});
+  const BuisnessScreen({super.key, required this.authToken});
+  final String authToken;
   static const String routeName = '/buisness-startup-screen';
   @override
   ConsumerState<BuisnessScreen> createState() => _BuisnessScreenState();
@@ -25,27 +26,31 @@ class _BuisnessScreenState extends ConsumerState<BuisnessScreen> {
 
   Future<void> _fetchData() async {
     try {
-      final token = ref.watch(startuptokenProvider);
+      /*final token =
+          ref.read(startuptokenProvider); */ // Use ref.read with listen: false
+      final authToken = widget.authToken;
+      print(authToken);
       final response = await http.get(
         Uri.parse('http://dharmarajjena.pythonanywhere.com/api/company/'),
         headers: {
-          'Authorization': 'Token $token',
+          'Token': authToken,
         },
       );
 
-      print(response.body);
-
       if (response.statusCode == 200) {
-        final List<dynamic> data = json.decode(response.body);
-        final List<BusinessFormData> businesses = data.map((item) {
-          return BusinessFormData.fromJson(item);
-        }).toList();
+        print(response.body);
+        //print(token);
 
         setState(() {
+          final List<dynamic> data = json.decode(response.body);
+          final List<BusinessFormData> businesses = data.map((item) {
+            return BusinessFormData.fromJson(item);
+          }).toList();
+
           submittedBusinesses = businesses;
         });
       } else {
-        print('Failed to fetch data : ${response.statusCode}');
+        print('Failed to fetch data: ${response.statusCode}');
       }
     } catch (error) {
       print('Error fetching data: $error');
@@ -69,13 +74,16 @@ class _BuisnessScreenState extends ConsumerState<BuisnessScreen> {
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           // Navigate to the Form Screen and get the submitted data
-          final newBusiness =
-              await Navigator.pushNamed(context, BuisnessFormScreen.routeName);
+          // final newBusiness =
+          await Navigator.pushNamed(context, BuisnessFormScreen.routeName,
+              arguments: widget.authToken);
 
-          if (newBusiness != null && newBusiness is BusinessFormData) {
+          _fetchData();
+
+          /* if (newBusiness != null && newBusiness is BusinessFormData) {
             // Add the submitted business to the list
-            _fetchData(); // Refresh the data list
-          }
+            // Refresh the data list
+          }*/
         },
         child: const Icon(Icons.add),
       ),

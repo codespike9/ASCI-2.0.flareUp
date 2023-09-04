@@ -6,7 +6,8 @@ import 'package:http_parser/http_parser.dart';
 
 class BuisnessFormScreen extends StatefulWidget {
   static const String routeName = '/buisness-form-screen';
-  const BuisnessFormScreen({super.key});
+  const BuisnessFormScreen({super.key, required this.authToken});
+  final String authToken;
 
   @override
   State<BuisnessFormScreen> createState() => _BuisnessFormScreenState();
@@ -53,12 +54,16 @@ class _BuisnessFormScreenState extends State<BuisnessFormScreen> {
   }
 
   Future<void> _submitForm() async {
+    final authToken = widget.authToken;
     if (_formKey.currentState!.validate()) {
       final uri =
           Uri.parse('http://dharmarajjena.pythonanywhere.com/api/company/');
 
+      print(authToken);
+
       final request = http.MultipartRequest('POST', uri);
-      request.headers['Access-Control-Allow-Credentials'] = 'true';
+      request.headers['Token'] = authToken;
+      // request.headers['Access-Control-Allow-Credentials'] = 'true';
       request.headers['Content-Type'] = 'application/json';
       request.fields['business_stage'] = _businessStageController.text;
       request.fields['industry_category'] = _industryCategoryController.text;

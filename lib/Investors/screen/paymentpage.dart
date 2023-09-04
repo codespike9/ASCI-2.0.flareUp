@@ -1,6 +1,10 @@
+import 'dart:ffi';
+
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 class PaymentPage extends StatefulWidget {
   const PaymentPage(
@@ -10,7 +14,7 @@ class PaymentPage extends StatefulWidget {
       required this.companyId,
       required this.paymentId});
 
-  final String choosenEquity;
+  final double choosenEquity;
   final double equivalentPrice;
   final int companyId;
   final String paymentId;
@@ -20,12 +24,48 @@ class PaymentPage extends StatefulWidget {
 }
 
 class _PaymentPageState extends State<PaymentPage> {
+  void postPaymentInformation() async {
+    const apiUrl = 'https://dharmarajjena.pythonanywhere.com/api/pay/';
+
+    final requestBody = {
+      'equity_purchased': widget.choosenEquity,
+      'payment_id': widget.paymentId,
+      'price_paid': widget.equivalentPrice,
+      'company': widget.companyId,
+    };
+
+    try {
+      final response = await http.post(
+        Uri.parse(apiUrl),
+        body: json.encode(requestBody),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      );
+
+      print(requestBody);
+      print(response.body);
+
+      if (response.statusCode == 202) {
+        print('Payment information successfully posted.');
+        // Handle success here
+      } else {
+        print('Failed to post payment information: ${response.statusCode}');
+        // Handle failure here
+      }
+    } catch (error) {
+      print('Error: $error');
+      // Handle error here
+    }
+  }
+
   var _razorpay = Razorpay();
   String choosenEquity = '';
   String equivalentPrice = '';
 
   void _handlePaymentSuccess(PaymentSuccessResponse response) {
-    print('Payment Gateway Succesful');
+    print('*******Payment Gateway Succesful*********');
+    postPaymentInformation();
     // Do something when payment succeeds
   }
 
