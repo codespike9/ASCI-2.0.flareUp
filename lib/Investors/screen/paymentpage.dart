@@ -1,35 +1,40 @@
-import 'dart:ffi';
-
+//import 'package:flutter_flareup/Investors/screen/payment_succesful.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
+import 'tabscreen.dart';
+
 class PaymentPage extends StatefulWidget {
-  const PaymentPage(
-      {super.key,
-      required this.choosenEquity,
-      required this.equivalentPrice,
-      required this.companyId,
-      required this.paymentId});
+  const PaymentPage({
+    super.key,
+    required this.choosenEquity,
+    required this.equivalentPrice,
+    required this.companyId,
+    required this.paymentId,
+    required this.authToken,
+  });
 
   final double choosenEquity;
   final double equivalentPrice;
   final int companyId;
   final String paymentId;
+  final String authToken;
 
   @override
   State<PaymentPage> createState() => _PaymentPageState();
 }
 
 class _PaymentPageState extends State<PaymentPage> {
-  void postPaymentInformation() async {
+  void postPaymentInformation(String razorPaymentId) async {
+    final authToken = widget.authToken;
     const apiUrl = 'https://dharmarajjena.pythonanywhere.com/api/pay/';
 
     final requestBody = {
       'equity_purchased': widget.choosenEquity,
-      'payment_id': widget.paymentId,
+      'payment_id': razorPaymentId,
       'price_paid': widget.equivalentPrice,
       'company': widget.companyId,
     };
@@ -37,17 +42,31 @@ class _PaymentPageState extends State<PaymentPage> {
     try {
       final response = await http.post(
         Uri.parse(apiUrl),
-        body: json.encode(requestBody),
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': 'Token $authToken',
         },
+        body: json.encode(requestBody),
       );
 
-      print(requestBody);
+      print(authToken);
       print(response.body);
 
       if (response.statusCode == 202) {
         print('Payment information successfully posted.');
+
+        if (!context.mounted) {
+          return;
+        }
+
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) =>
+                InvestorTabScreen(authToken: widget.authToken),
+          ),
+        );
+
         // Handle success here
       } else {
         print('Failed to post payment information: ${response.statusCode}');
@@ -64,8 +83,17 @@ class _PaymentPageState extends State<PaymentPage> {
   String equivalentPrice = '';
 
   void _handlePaymentSuccess(PaymentSuccessResponse response) {
+    String? razorpayPaymentId = response.paymentId;
     print('*******Payment Gateway Succesful*********');
-    postPaymentInformation();
+
+    postPaymentInformation(razorpayPaymentId!);
+    const snackBar = SnackBar(
+      content: Text('Payment Successful : Thank You For Investing'),
+      backgroundColor: Colors.green,
+      duration: Duration(seconds: 5),
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
     // Do something when payment succeeds
   }
 

@@ -65,13 +65,14 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
             BuisnessList(authToken: routeSettings.arguments as String),
       );
 
-    case BuisnessDetails.routeName:
+    /*case BuisnessDetails.routeName:
       return MaterialPageRoute(
         settings: routeSettings,
         builder: (_) => BuisnessDetails(
           business: routeSettings.arguments as InvestorBusiness,
+          authToken: routeSettings.arguments as String,
         ),
-      );
+      );*/
 
     default:
       return MaterialPageRoute(

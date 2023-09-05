@@ -6,8 +6,12 @@ import 'package:flutter_flareup/Investors/pages/profile_page.dart';
 import 'package:flutter_flareup/Investors/screen/in_buisness_list.dart';
 
 class InvestorTabScreen extends StatefulWidget {
-  const InvestorTabScreen({super.key, required this.authToken});
+  const InvestorTabScreen({
+    super.key,
+    required this.authToken,
+  });
   final String authToken;
+
   static const String routeName = '/investor-tab-screen';
 
   @override
@@ -26,7 +30,9 @@ class _InvestorTabScreenState extends State<InvestorTabScreen> {
     _pages = [
       BuisnessList(authToken: widget.authToken),
       const BlogPage(),
-      const YourInvestmentPage(),
+      YourInvestmentPage(
+        authToken: widget.authToken,
+      ),
     ];
   }
 

@@ -6,17 +6,22 @@ import '../models/Investor_buisness.dart';
 
 class BusinessCard extends StatelessWidget {
   final InvestorBusiness business;
+  final String authToken;
 
-  BusinessCard({required this.business});
+  BusinessCard({required this.business, required this.authToken});
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Navigator.pushNamed(
+        Navigator.push(
           context,
-          BuisnessDetails.routeName,
-          arguments: business,
+          MaterialPageRoute(
+            builder: (context) => BuisnessDetails(
+              authToken: authToken,
+              business: business,
+            ),
+          ),
         );
       },
       child: Card(
@@ -78,8 +83,8 @@ class BusinessCard extends StatelessWidget {
                   Row(
                     children: [
                       const Icon(Icons.category_outlined,
-                          color:
-                              Color.fromARGB(255, 108, 108, 108)), // Replace with your desired icon
+                          color: Color.fromARGB(255, 108, 108,
+                              108)), // Replace with your desired icon
                       const SizedBox(
                           width: 8), // Add spacing between icon and text
                       Text(

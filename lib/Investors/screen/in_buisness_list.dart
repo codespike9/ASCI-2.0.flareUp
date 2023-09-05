@@ -35,8 +35,8 @@ class _BuisnessListState extends State<BuisnessList> {
         'Authorization': 'Token $authToken',
       },
     );
-
-    print(response.body);
+    //print(authToken);
+    //print(response.body);
 
     if (response.statusCode == 200) {
       final jsonData = json.decode(response.body);
@@ -151,7 +151,10 @@ class _BuisnessListState extends State<BuisnessList> {
           itemCount: businessList.length,
           itemBuilder: (context, index) {
             final business = businessList[index];
-            return BusinessCard(business: business);
+            return BusinessCard(
+              business: business,
+              authToken: widget.authToken,
+            );
           },
         ),
       ),

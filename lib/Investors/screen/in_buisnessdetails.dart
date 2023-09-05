@@ -7,8 +7,10 @@ import '../models/Investor_buisness.dart';
 import 'package:http/http.dart' as http;
 
 class BuisnessDetails extends StatefulWidget {
-  const BuisnessDetails({super.key, required this.business});
+  const BuisnessDetails(
+      {super.key, required this.business, required this.authToken});
   final InvestorBusiness business;
+  final String authToken;
   static const String routeName = '/investor-buisness-details';
 
   @override
@@ -84,6 +86,7 @@ class _BuisnessDetailsState extends State<BuisnessDetails> {
             equivalentPrice: equivalentPrice,
             companyId: investedCompanyId,
             paymentId: paymentId,
+            authToken: widget.authToken,
           ),
         ),
       );
@@ -164,7 +167,7 @@ class _BuisnessDetailsState extends State<BuisnessDetails> {
                         ),
                         const SizedBox(height: 12),
                         Text(
-                          'Equity: ${widget.business.equity}',
+                          'Equity Available: ${widget.business.equity}',
                           style: const TextStyle(
                             fontSize: 16,
                           ),
@@ -362,13 +365,6 @@ class _BuisnessDetailsState extends State<BuisnessDetails> {
                         const SizedBox(height: 12),
                         Text(
                           'Raising Amount: ${widget.business.raisingAmount}',
-                          style: const TextStyle(
-                            fontSize: 16,
-                          ),
-                        ),
-                        const SizedBox(height: 12),
-                        Text(
-                          'Quantity Available: ${widget.business.quantityAvailable}',
                           style: const TextStyle(
                             fontSize: 16,
                           ),

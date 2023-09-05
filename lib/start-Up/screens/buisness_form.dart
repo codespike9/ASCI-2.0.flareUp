@@ -3,6 +3,8 @@ import 'package:flutter_flareup/start-Up/widgets/common_formfield.dart';
 import 'package:http/http.dart' as http;
 import 'package:file_picker/file_picker.dart';
 import 'package:http_parser/http_parser.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
 
 class BuisnessFormScreen extends StatefulWidget {
   static const String routeName = '/buisness-form-screen';
@@ -65,6 +67,7 @@ class _BuisnessFormScreenState extends State<BuisnessFormScreen> {
       request.headers['Token'] = authToken;
       // request.headers['Access-Control-Allow-Credentials'] = 'true';
       request.headers['Content-Type'] = 'application/json';
+
       request.fields['business_stage'] = _businessStageController.text;
       request.fields['industry_category'] = _industryCategoryController.text;
       request.fields['companyName'] = _companyNameController.text;
@@ -105,6 +108,22 @@ class _BuisnessFormScreenState extends State<BuisnessFormScreen> {
     }
   }
 
+  File? _selectedImage;
+
+  Future<void> _pickImageFromGallery() async {
+    final pickedImageFile = await ImagePicker().pickImage(
+      source: ImageSource.gallery,
+      imageQuality: 100,
+      maxWidth: 300,
+    );
+
+    if (pickedImageFile != null) {
+      setState(() {
+        _selectedImage = File(pickedImageFile.path);
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -118,6 +137,44 @@ class _BuisnessFormScreenState extends State<BuisnessFormScreen> {
           child: SingleChildScrollView(
             child: Column(
               children: [
+                Container(
+                  width: 300,
+                  height: 300,
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                        color: Colors.grey), // Add a border for visual clarity
+                  ),
+                  child: _selectedImage == null
+                      ? const Center(
+                          child: Text(
+                            'Select Logo Of Your Company',
+                            style: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                        )
+                      : Image.file(
+                          _selectedImage!,
+                          fit: BoxFit.cover,
+                        ),
+                ),
+                const SizedBox(
+                  height: 12,
+                ),
+                TextButton.icon(
+                  onPressed: _pickImageFromGallery,
+                  icon: const Icon(
+                    Icons.image,
+                    color: Color.fromARGB(255, 101, 0, 118),
+                  ),
+                  label: const Text(
+                    'Add Image',
+                    style: TextStyle(
+                      color: Color.fromARGB(255, 101, 0, 118),
+                    ),
+                  ),
+                ),
                 CommonTextField(
                   labelText: 'Business Stage',
                   hintText: 'Enter the business stage',
@@ -188,6 +245,13 @@ class _BuisnessFormScreenState extends State<BuisnessFormScreen> {
                 ),
                 ElevatedButton(
                   onPressed: _pickAbstractFile,
+                  style: ElevatedButton.styleFrom(
+                    foregroundColor: Colors.white,
+                    backgroundColor: Colors.purple,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                  ),
                   child: const Text('Pick Abstract PDF'),
                 ),
                 const SizedBox(height: 16),
@@ -219,33 +283,12 @@ class _BuisnessFormScreenState extends State<BuisnessFormScreen> {
                   keyboardType: TextInputType.number,
                 ),
                 const SizedBox(height: 16),
-                /* CommonTextField(
-                  labelText: 'Raising Amount',
-                  hintText: 'Enter the raising amount',
-                  controller: _raisingAmountController,
-                  keyboardType: TextInputType.number,
-                ),*/
-                const SizedBox(height: 16),
                 CommonTextField(
                   labelText: 'Equity',
                   hintText: 'Enter the equity',
                   controller: _equityController,
                   keyboardType: TextInputType.number,
                 ),
-                const SizedBox(height: 16),
-                /* CommonTextField(
-                  labelText: 'Valuation',
-                  hintText: 'Enter the valuation',
-                  controller: _valuationController,
-                  keyboardType: TextInputType.number,
-                ),*/
-                const SizedBox(height: 16),
-                /*  CommonTextField(
-                  labelText: 'Quantity Available',
-                  hintText: 'Enter the quantity available',
-                  controller: _quantityAvailableController,
-                  keyboardType: TextInputType.number,
-                ), */
                 const SizedBox(height: 16),
                 CommonTextField(
                   labelText: 'Category',
@@ -261,8 +304,22 @@ class _BuisnessFormScreenState extends State<BuisnessFormScreen> {
                 const SizedBox(height: 16),
                 ElevatedButton(
                   onPressed: _submitForm,
-                  child: const Text('Submit'),
-                ),
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 12),
+                    foregroundColor: Colors.white,
+                    backgroundColor: const Color.fromARGB(208, 176, 85, 241),
+                    // Text color
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(
+                          10.0), // Adjust the radius as needed
+                    ),
+                  ),
+                  child: const Text(
+                    'Register',
+                    style: TextStyle(fontSize: 20),
+                  ),
+                )
               ],
             ),
           ),

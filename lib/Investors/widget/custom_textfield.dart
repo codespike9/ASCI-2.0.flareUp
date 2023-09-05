@@ -5,13 +5,14 @@ class CustomTextField extends StatelessWidget {
   final String hintText;
   final int maxLines;
   final TextInputType keyboardType;
-  final bool obscureText; 
+  final bool obscureText;
   const CustomTextField({
     Key? key,
     required this.controller,
     required this.hintText,
     this.maxLines = 1,
-    required this.keyboardType,  this.obscureText = false,
+    required this.keyboardType,
+    this.obscureText = false,
   }) : super(key: key);
 
   @override
@@ -22,14 +23,13 @@ class CustomTextField extends StatelessWidget {
       keyboardType: keyboardType,
       decoration: InputDecoration(
         hintText: hintText,
-        border: const OutlineInputBorder(
-            borderSide: BorderSide(
-          color: Colors.black38,
-        )),
+        focusedBorder: const OutlineInputBorder(
+          borderSide:
+              BorderSide(color: Colors.purple), // Purple border when focused
+        ),
         enabledBorder: const OutlineInputBorder(
-          borderSide: BorderSide(
-            color: Colors.black38,
-          ),
+          borderSide:
+              BorderSide(color: Colors.purple), // Purple border by default
         ),
       ),
       validator: (val) {

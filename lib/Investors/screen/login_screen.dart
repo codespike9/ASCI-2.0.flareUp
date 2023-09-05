@@ -51,7 +51,9 @@ class _LoginScreenState extends State<LoginScreen> {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => InvestorTabScreen(authToken: token),
+          builder: (context) => InvestorTabScreen(
+            authToken: token,
+          ),
         ),
       );
     } else {
