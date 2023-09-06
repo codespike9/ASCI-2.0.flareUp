@@ -1,79 +1,61 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_flareup/Investors/screen/bankdetails.dart';
-
+import 'package:flutter_flareup/Investors/screen/login_screen.dart';
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
 
-class SignUpScreen extends StatefulWidget {
-  const SignUpScreen({super.key});
-  static const String routeName = '/investor-signup-screen';
-
-  @override
-  State<SignUpScreen> createState() => _SignUpScreenState();
-}
-
-class _SignUpScreenState extends State<SignUpScreen> {
-  final _formKey = GlobalKey<FormState>();
-
-  var _firstname = '';
-  var _lastname = '';
-  var _username = '';
-  var _email = '';
-  var _password = '';
-
-  void _saveInfo() async {
-    if (_formKey.currentState!.validate()) {
-      _formKey.currentState!.save();
-
-      const apiUrl = 'http://dharmarajjena.pythonanywhere.com/api/register/';
-
-      final requestBody = {
-        "first_name": _firstname,
-        "last_name": _lastname,
-        "username": _username,
-        "email": _email,
-        "password": _password,
-      };
-
-      final response = await http.post(Uri.parse(apiUrl), body: requestBody);
-
-      if (response.statusCode == 201) {
-        
-         final responseData = json.decode(response.body);
-      final token = responseData['token'];
-
-      final prefs = await SharedPreferences.getInstance();
-      prefs.setString('authToken', token);
-      print("Signup Successful, Token: $token");
-
-        // ignore: use_build_context_synchronously
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Registration successful! fill your bank details'),
-            duration: Duration(seconds: 3),
-          ),
-        );
-        // ignore: use_build_context_synchronously
-        Navigator.pushNamed(context, BankDetailsScreen.routeName , arguments: token);
-      } else {
-        // Registration failed, you might want to show an error message
-        // ignore: use_build_context_synchronously
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Registration failed try again'),
-            duration: Duration(seconds: 2), // Adjust the duration as needed
-          ),
-        );
-
-        print('Registration failed with status code: ${response.statusCode}');
-      }
-    }
-  }
-
+class BankDetailsScreen extends StatelessWidget {
+  static const String routeName = '/investor-bank-screen';
+  const BankDetailsScreen({super.key, required this.authToken});
+  final String authToken;
   @override
   Widget build(BuildContext context) {
+    final _Key = GlobalKey<FormState>();
+    var _accountno = '';
+    var _ifsc = '';
+
+    void _saveInfo() async {
+      if (_Key.currentState!.validate()) {
+        _Key.currentState!.save();
+
+        const apiUrl = 'http://dharmarajjena.pythonanywhere.com/api/bank_info/';
+
+        final requestBody = {
+          "IFSC_code": _ifsc,
+          "ACC_no": _accountno,
+        };
+
+        final response = await http.post(
+          Uri.parse(apiUrl),
+          headers: {
+            'Authorization': 'Token $authToken',
+          },
+          body: requestBody,
+        );
+
+        if (response.statusCode == 201) {
+          // ignore: use_build_context_synchronously
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content:
+                  Text('Registration successful! Login with same credentials'),
+              duration: Duration(seconds: 3),
+            ),
+          );
+          // ignore: use_build_context_synchronously
+          Navigator.pushNamed(context, LoginScreen.routeName);
+        } else {
+          // ignore: use_build_context_synchronously
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Registration failed try again'),
+              duration: Duration(seconds: 2), // Adjust the duration as needed
+            ),
+          );
+
+          print('Registration failed with status code: ${response.statusCode}');
+        }
+      }
+    }
+
     return Scaffold(
       body: SizedBox(
         width: double.infinity,
@@ -88,7 +70,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             ),
           ),
           child: Form(
-            key: _formKey,
+            key: _Key,
             child: SingleChildScrollView(
               child: Column(
                 children: [
@@ -97,7 +79,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                   TextFormField(
                     decoration: InputDecoration(
-                      labelText: 'Firstname',
+                      labelText: 'Account Number',
                       focusedBorder: OutlineInputBorder(
                         borderSide:
                             const BorderSide(color: Colors.blue, width: 2.0),
@@ -122,15 +104,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         borderRadius: BorderRadius.circular(10.0),
                       ),
                     ),
-                    keyboardType: TextInputType.name,
+                    keyboardType: TextInputType.number,
                     validator: (value) {
                       if (value!.isEmpty) {
-                        return 'Please enter your Firstname';
+                        return 'Please enter your bank account number';
                       }
                       return null;
                     },
                     onSaved: (value) {
-                      _firstname = value!;
+                      _accountno = value!;
                     },
                   ),
                   const SizedBox(
@@ -138,7 +120,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                   TextFormField(
                     decoration: InputDecoration(
-                      labelText: 'Lastname',
+                      labelText: 'ifsc code',
                       focusedBorder: OutlineInputBorder(
                         borderSide:
                             const BorderSide(color: Colors.blue, width: 2.0),
@@ -163,21 +145,21 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         borderRadius: BorderRadius.circular(10.0),
                       ),
                     ),
-                    keyboardType: TextInputType.name,
+                    keyboardType: TextInputType.streetAddress,
                     validator: (value) {
                       if (value!.isEmpty) {
-                        return 'Please enter your Lastname';
+                        return 'Please enter your ifsc code';
                       }
                       return null;
                     },
                     onSaved: (value) {
-                      _lastname = value!;
+                      _ifsc = value!;
                     },
                   ),
                   const SizedBox(
                     height: 20,
                   ),
-                  TextFormField(
+                  /*TextFormField(
                     decoration: InputDecoration(
                       labelText: 'Username',
                       focusedBorder: OutlineInputBorder(
@@ -302,7 +284,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     onSaved: (value) {
                       _password = value!;
                     },
-                  ),
+                  ),*/
                   const SizedBox(
                     height: 40,
                   ),

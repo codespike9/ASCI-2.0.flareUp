@@ -13,6 +13,8 @@ import 'package:flutter_flareup/start-Up/screens/buisness_form.dart';
 import 'package:flutter_flareup/start-Up/screens/buisness_screen.dart';
 import 'package:flutter_flareup/start-Up/screens/buisness_sign_in.dart';
 
+import 'Investors/screen/bankdetails.dart';
+
 Route<dynamic> generateRoute(RouteSettings routeSettings) {
   switch (routeSettings.name) {
     case LoginScreen.routeName:
@@ -73,6 +75,14 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
           authToken: routeSettings.arguments as String,
         ),
       );*/
+
+    case BankDetailsScreen.routeName:
+      return MaterialPageRoute(
+        settings: routeSettings,
+        builder: (_) => BankDetailsScreen(
+          authToken: routeSettings.arguments as String,
+        ),
+      );
 
     default:
       return MaterialPageRoute(

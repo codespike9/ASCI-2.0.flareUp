@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_flareup/Investors/models/in_bankdetails.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -17,10 +18,12 @@ class YourInvestmentPage extends StatefulWidget {
 
 class _YourInvestmentPageState extends State<YourInvestmentPage> {
   List<InvestorProfile> investedbusinessList = [];
+  List<InvestorBankDetails> investorBankDetailsList = [];
 
   void initState() {
     super.initState();
     _fetchInvestedBusinessData();
+    _fetchBankDetails();
   }
 
   Future<void> _fetchInvestedBusinessData() async {
@@ -32,8 +35,6 @@ class _YourInvestmentPageState extends State<YourInvestmentPage> {
         'Authorization': 'Token $authToken',
       },
     );
-    print('profile page');
-    print(response.body);
 
     if (response.statusCode == 200) {
       print('Profile data fetch possible');
@@ -49,6 +50,73 @@ class _YourInvestmentPageState extends State<YourInvestmentPage> {
     } else {
       print('Failed to fetch data ${response.statusCode}');
     }
+  }
+
+  Future<void> _fetchBankDetails() async {
+    final authToken = widget.authToken;
+    final response = await http.get(
+      headers: {
+        'Authorization': 'Token $authToken',
+      },
+      Uri.parse('http://dharmarajjena.pythonanywhere.com/api/bank_info/'),
+    );
+    print('Bank details');
+    print(response.body);
+
+    if (response.statusCode == 201) {
+      final jsonData = json.decode(response.body);
+      final investorBankDetails = InvestorBankDetails.fromJson(jsonData);
+
+      setState(() {
+        investorBankDetailsList = [investorBankDetails];
+        // Create a copy of the original list for resetting the filter
+      });
+    } else {
+      print('Failed to fetch data ${response.statusCode}');
+    }
+  }
+
+  void _showBankDetailsDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Bank Details'),
+          content: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: investorBankDetailsList.isNotEmpty
+                ? investorBankDetailsList.map((bankDetails) {
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'IFSC Code : ${bankDetails.ifsc}',
+                          style: titleTextStyle,
+                        ),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        Text(
+                          'Account Number : ${bankDetails.accno}',
+                          style: titleTextStyle,
+                        ),
+                      ],
+                    );
+                  }).toList()
+                : [const Text('No Bank Details')],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: const Text('Close'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -68,12 +136,15 @@ class _YourInvestmentPageState extends State<YourInvestmentPage> {
                   "https://images.pexels.com/photos/351264/pexels-photo-351264.jpeg?auto=compress&cs=tinysrgb&w=600",
                   height: h / 3,
                 ),
-                const Positioned(
+                Positioned(
                   bottom: -40,
-                  child: CircleAvatar(
-                    radius: 50,
-                    backgroundImage: NetworkImage(
-                        "https://www.w3schools.com/howto/img_avatar.png"),
+                  child: GestureDetector(
+                    onTap: _showBankDetailsDialog,
+                    child: const CircleAvatar(
+                      radius: 50,
+                      backgroundImage: NetworkImage(
+                          "https://www.w3schools.com/howto/img_avatar.png"),
+                    ),
                   ),
                 ),
               ],
@@ -127,3 +198,9 @@ class _YourInvestmentPageState extends State<YourInvestmentPage> {
     );
   }
 }
+
+TextStyle titleTextStyle = GoogleFonts.lato(
+  fontSize: 16.0,
+  fontWeight: FontWeight.w500,
+  color: Color.fromARGB(226, 43, 5, 236),
+);
