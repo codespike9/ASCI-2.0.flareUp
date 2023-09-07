@@ -29,80 +29,86 @@ class BusinessCard extends StatelessWidget {
         margin: const EdgeInsets.all(12.0),
         child: Column(
           children: [
-            Image.asset(
-                'assets/images/dummyimage.jpg'), // Replace with your local image path
+            _buildImage(),
             ListTile(
               title: Row(
                 children: [
-                  const Icon(Icons.business,
-                      color: Colors.blue), // Replace with your desired icon
-                  const SizedBox(width: 8), // Add spacing between icon and text
+                  const Icon(Icons.business, color: Colors.blue),
+                  const SizedBox(width: 8),
                   Text(
-                    'Comapny Name : ${business.companyName}',
+                    'Company Name : ${business.companyName}',
                     style: GoogleFonts.phudu(
-                        fontSize: 16, fontWeight: FontWeight.w600),
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                 ],
               ),
               subtitle: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    children: [
-                      const Icon(Icons.monetization_on,
-                          color:
-                              Colors.green), // Replace with your desired icon
-                      const SizedBox(
-                          width: 8), // Add spacing between icon and text
-                      Text(
-                        'Valuation: ${business.valuation}',
-                        style: GoogleFonts.inter(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w400,
-                          color: const Color.fromARGB(255, 116, 116, 116),
-                        ),
-                      ),
-                    ],
+                  _buildInfoRow(
+                    Icons.monetization_on,
+                    'Valuation: ${business.valuation}',
+                    const Color.fromARGB(255, 116, 116, 116),
                   ),
-                  Row(
-                    children: [
-                      const Icon(Icons.people,
-                          color: Colors.blue), // Replace with your desired icon
-                      const SizedBox(
-                          width: 8), // Add spacing between icon and text
-                      Text(
-                        'Equity: ${business.equity}',
-                        style: GoogleFonts.inter(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w400,
-                          color: const Color.fromARGB(255, 3, 139, 73),
-                        ),
-                      ),
-                    ],
+                  _buildInfoRow(
+                    Icons.people,
+                    'Equity: ${business.equity}',
+                    const Color.fromARGB(255, 3, 139, 73),
                   ),
-                  Row(
-                    children: [
-                      const Icon(Icons.category_outlined,
-                          color: Color.fromARGB(255, 108, 108,
-                              108)), // Replace with your desired icon
-                      const SizedBox(
-                          width: 8), // Add spacing between icon and text
-                      Text(
-                        'Sub-Category: ${business.industryCategory}', // Replace with the actual sub-category field
-                        style: GoogleFonts.inter(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w400,
-                          color: const Color.fromARGB(255, 0, 45, 244),
-                        ),
-                      ),
-                    ],
+                  _buildInfoRow(
+                    Icons.category_outlined,
+                    'Sub-Category: ${business.industryCategory}',
+                    const Color.fromARGB(255, 0, 45, 244),
                   ),
                 ],
               ),
-            )
+            ),
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildImage() {
+    String baseUrl =
+        'http://dharmarajjena.pythonanywhere.com'; // Replace with your backend's base URL
+    String imageUrl = business.image ?? '/media/cover_images/Alzeimers.jpg';
+    // Use the business image URL if available, or the dummy image URL as a fallback
+
+    String completeImageUrl = baseUrl + imageUrl;
+    if (business.image != null) {
+      return Image.network(
+        completeImageUrl,
+        height: 200,
+        width: double.infinity,
+        fit: BoxFit.cover,
+      );
+    } else {
+      return Image.asset(
+        'assets/images/dummyimage.jpg',
+        height: 200,
+        width: double.infinity,
+        fit: BoxFit.cover,
+      );
+    }
+  }
+
+  Widget _buildInfoRow(IconData icon, String text, Color textColor) {
+    return Row(
+      children: [
+        Icon(icon, color: textColor),
+        const SizedBox(width: 8),
+        Text(
+          text,
+          style: GoogleFonts.inter(
+            fontSize: 15,
+            fontWeight: FontWeight.w400,
+            color: textColor,
+          ),
+        ),
+      ],
     );
   }
 }

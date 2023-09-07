@@ -1,5 +1,4 @@
 class BusinessFormData {
-  // final dynamic user;
   final String businessStage;
   final String industryCategory;
   final String companyName;
@@ -10,16 +9,13 @@ class BusinessFormData {
   final dynamic secondLastMonthRevenue;
   final dynamic thirdLastMonthRevenue;
   final dynamic lastYearRevenue;
-  // final dynamic raisingAmount;
+
   final dynamic equity;
-  // final dynamic valuation;
-  // final dynamic quantityAvailable;
-  // final bool valid;
+
   final dynamic image;
   final int category;
 
   BusinessFormData({
-    // required this.user,
     required this.businessStage,
     required this.industryCategory,
     required this.companyName,
@@ -30,18 +26,13 @@ class BusinessFormData {
     required this.secondLastMonthRevenue,
     required this.thirdLastMonthRevenue,
     required this.lastYearRevenue,
-    //required this.raisingAmount,
     required this.equity,
-    //required this.valuation,
-    //required this.quantityAvailable,
-    //required this.valid,
     required this.image,
     required this.category,
   });
 
   factory BusinessFormData.fromJson(Map<String, dynamic> json) {
     return BusinessFormData(
-      //  user: json['user'],
       businessStage: json['business_stage'],
       industryCategory: json['industry_category'],
       companyName: json['companyName'],
@@ -52,11 +43,7 @@ class BusinessFormData {
       secondLastMonthRevenue: json['second_last_month_revenue'],
       thirdLastMonthRevenue: json['third_last_month_revenue'],
       lastYearRevenue: json['last_year_revenue'],
-      //raisingAmount: json['raising_amount'],
       equity: json['equity'],
-      //valuation: json['valuation'],
-      //quantityAvailable: json['quantity_available'],
-      //valid: json['valid'],
       image: json['image'],
       category: json['category'],
     );
@@ -64,7 +51,6 @@ class BusinessFormData {
 
   Map<String, dynamic> toJson() {
     return {
-      //   'user': user,
       'business_stage': businessStage,
       'industry_category': industryCategory,
       'companyName': companyName,
@@ -75,11 +61,7 @@ class BusinessFormData {
       'second_last_month_revenue': secondLastMonthRevenue,
       'third_last_month_revenue': thirdLastMonthRevenue,
       'last_year_revenue': lastYearRevenue,
-      // 'raising_amount': raisingAmount,
       'equity': equity,
-      // 'valuation': valuation,
-      //'quantity_available': quantityAvailable,
-      // 'valid': valid,
       'image': image,
       'category': category,
     };

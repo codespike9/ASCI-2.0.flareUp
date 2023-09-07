@@ -82,6 +82,17 @@ class _BuisnessFormScreenState extends State<BuisnessFormScreen> {
       request.fields['equity'] = _equityController.text;
       request.fields['category'] = _categoryController.text;
 
+      if (_selectedImage != null) {
+        // Add the image file to the request
+        request.files.add(
+          await http.MultipartFile.fromPath(
+            'image',
+            _selectedImage!.path,
+            contentType: MediaType('image', 'jpeg'),
+          ),
+        );
+      }
+
       if (_abstractFilePath.isNotEmpty) {
         request.files.add(await http.MultipartFile.fromPath(
           'abstract',
