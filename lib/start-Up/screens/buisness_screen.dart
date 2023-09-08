@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_flareup/start-Up/models/buisness_company.dart';
 import 'package:flutter_flareup/start-Up/screens/buisness_form.dart';
+import 'package:flutter_flareup/start-Up/screens/update_list.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
@@ -28,7 +29,7 @@ class _BuisnessScreenState extends ConsumerState<BuisnessScreen> {
   Future<void> _fetchData() async {
     try {
       final authToken = widget.authToken;
-      print(authToken);
+
       final response = await http.get(
         Uri.parse('http://dharmarajjena.pythonanywhere.com/api/company/'),
         headers: {
@@ -37,9 +38,6 @@ class _BuisnessScreenState extends ConsumerState<BuisnessScreen> {
       );
 
       if (response.statusCode == 200) {
-        print(response.body);
-        //print(token);
-
         setState(() {
           final List<dynamic> data = json.decode(response.body);
           final List<BusinessFormData> businesses = data.map((item) {
@@ -138,9 +136,16 @@ class _BuisnessScreenState extends ConsumerState<BuisnessScreen> {
               ),
               // Update Button
               TextButton(
-                onPressed: () {
-                  // Add your update logic here
-                  Navigator.of(context).pop(); // Close the dialog
+                onPressed: () async {
+                  await Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => UpdateBuisness(
+                        id: business.id,
+                      ),
+                    ),
+                  );
+                  _fetchData();
                 },
                 child: const Row(
                   children: [
@@ -159,9 +164,35 @@ class _BuisnessScreenState extends ConsumerState<BuisnessScreen> {
 
               //Delete Button
               TextButton(
-                onPressed: () {
-                  // Add your delete logic here
-                  Navigator.of(context).pop(); // Close the dialog
+                onPressed: () async {
+                  // Close the dialog
+
+                  // Send the delete request
+                  final deleteUrl =
+                      'https://dharmarajjena.pythonanywhere.com/api/deleteCompany/${business.id}';
+                  final response = await http.delete(Uri.parse(deleteUrl));
+                  print(business.id);
+                  print(response.body);
+
+                  if (response.statusCode == 200) {
+                    // Handle successful deletion (you can show a message or update your UI)
+                    print('Business deleted successfully.');
+                    Navigator.of(context).pop();
+                    _fetchData();
+                    const snackBar = SnackBar(
+                      content: Text('Buisness Deletion Succesful!!'),
+                      backgroundColor: Colors.red,
+                      duration: Duration(seconds: 5),
+                    );
+                    if (!context.mounted) {
+                      return;
+                    }
+
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  } else {
+                    // Handle deletion failure (you can show an error message)
+                    print('Failed to delete business: ${response.statusCode}');
+                  }
                 },
                 child: const Row(
                   children: [

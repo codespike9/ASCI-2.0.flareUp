@@ -1,4 +1,5 @@
 class BusinessFormData {
+  final int id;
   final String businessStage;
   final String industryCategory;
   final String companyName;
@@ -16,6 +17,7 @@ class BusinessFormData {
   final int category;
 
   BusinessFormData({
+    required this.id,
     required this.businessStage,
     required this.industryCategory,
     required this.companyName,
@@ -33,6 +35,7 @@ class BusinessFormData {
 
   factory BusinessFormData.fromJson(Map<String, dynamic> json) {
     return BusinessFormData(
+      id: json['id'],
       businessStage: json['business_stage'],
       industryCategory: json['industry_category'],
       companyName: json['companyName'],
@@ -51,6 +54,7 @@ class BusinessFormData {
 
   Map<String, dynamic> toJson() {
     return {
+      'id': id,
       'business_stage': businessStage,
       'industry_category': industryCategory,
       'companyName': companyName,
