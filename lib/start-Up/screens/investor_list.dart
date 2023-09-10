@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import '../models/investor_invested.dart';
 
 class InvestedBuisnessList extends StatefulWidget {
   const InvestedBuisnessList({super.key, required this.id});
@@ -9,6 +13,32 @@ class InvestedBuisnessList extends StatefulWidget {
 }
 
 class _InvestedBuisnessListState extends State<InvestedBuisnessList> {
+  List<InvestorInvested> investorinvestedList = [];
+
+  @override
+  void initState() {
+    super.initState();
+    fetchInvestorInvestedInfo();
+  }
+
+  Future<void> fetchInvestorInvestedInfo() async {
+    final response = await http.get(Uri.parse(
+        "https://dharmarajjena.pythonanywhere.com/api/investor_bank_info/${widget.id}"));
+
+    if (response.statusCode == 200) {
+      final List<dynamic> jsonResponse = json.decode(response.body);
+      final List<InvestorInvested> tempList = [];
+      for (final item in jsonResponse) {
+        tempList.add(InvestorInvested.fromJson(item));
+      }
+      setState(() {
+        investorinvestedList = tempList;
+      });
+    } else {
+      throw Exception('Failed to load investor invested data');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,7 +78,7 @@ class _InvestedBuisnessListState extends State<InvestedBuisnessList> {
             ),
           ),
           Positioned(
-            top: 175,
+            top: 190,
             left: 15,
             right: 15,
             bottom: 0,
@@ -66,10 +96,60 @@ class _InvestedBuisnessListState extends State<InvestedBuisnessList> {
                 ),
                 borderRadius: BorderRadius.circular(25.0),
               ),
+              child: investorinvestedList.isEmpty
+                  ? const Center(
+                      child: Text(
+                        "No one has invested yet",
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold),
+                      ),
+                    )
+                  : ListView.builder(
+                      itemCount: investorinvestedList.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        final investor =
+                            investorinvestedList.reversed.toList()[index];
+                        return Card(
+                          elevation:
+                              4.0, // Customize the elevation for the shadow effect
+                          margin: const EdgeInsets.all(8.0),
+                          child: ListTile(
+                            leading: const Icon(
+                                Icons.person), // Add an appropriate icon
+                            title: Text(
+                              'Name : ${investor.name}',
+                              style: GoogleFonts.adamina(
+                                  fontSize: 18, fontWeight: FontWeight.bold),
+                            ),
+                            subtitle: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Email: ${investor.email}',
+                                  style: subtitleTextStyle,
+                                ),
+                                Text(
+                                  'Equity: ${investor.equity}%',
+                                  style: subtitleTextStyle,
+                                ),
+                                Text(
+                                  'IFSC: ${investor.ifscCode}',
+                                  style: subtitleTextStyle,
+                                ),
+                                Text(
+                                  'Account: ${investor.accountNumber}',
+                                  style: subtitleTextStyle,
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    ),
             ),
           ),
           Positioned(
-            top: 130,
+            top: 125,
             left: 100,
             right: 100,
             child: GestureDetector(
@@ -84,4 +164,9 @@ class _InvestedBuisnessListState extends State<InvestedBuisnessList> {
       ),
     );
   }
+
+  TextStyle subtitleTextStyle = GoogleFonts.lato(
+    fontSize: 15.0,
+    fontWeight: FontWeight.w400,
+  );
 }
