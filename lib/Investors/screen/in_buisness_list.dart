@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_flareup/Investors/models/Investor_buisness.dart';
+import 'package:flutter_flareup/Start-Screen/start_screen.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -135,6 +136,14 @@ class _BuisnessListState extends State<BuisnessList> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Business List'),
+        actions: <Widget>[
+          IconButton(
+            icon: const Icon(Icons.logout),
+            onPressed: () {
+              Navigator.pushNamed(context, StartScreen.routeName);
+            },
+          ),
+        ],
       ),
       body: Container(
         decoration: const BoxDecoration(

@@ -6,6 +6,7 @@ import 'package:flutter_flareup/start-Up/screens/buisness_sign_in.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class StartScreen extends StatelessWidget {
+  static const String routeName = '/start-screen';
   const StartScreen({super.key});
   @override
   Widget build(BuildContext context) {

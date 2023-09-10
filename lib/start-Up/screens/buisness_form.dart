@@ -37,7 +37,7 @@ class _BuisnessFormScreenState extends State<BuisnessFormScreen> {
   final TextEditingController _equityController = TextEditingController();
   //final TexteditingController _valuationController = TextEditingController();
   //final TextEditingController _quantityAvailableController =TextEditingController();
-  final TextEditingController _categoryController = TextEditingController();
+  //final TextEditingController _categoryController = TextEditingController();
 
   String _abstractFilePath = '';
 
@@ -80,7 +80,7 @@ class _BuisnessFormScreenState extends State<BuisnessFormScreen> {
           _thirdLastMonthRevenueController.text;
       request.fields['last_year_revenue'] = _lastYearRevenueController.text;
       request.fields['equity'] = _equityController.text;
-      request.fields['category'] = _categoryController.text;
+      request.fields['category'] = _selectedCategory.toString();
 
       if (_selectedImage != null) {
         // Add the image file to the request
@@ -135,6 +135,7 @@ class _BuisnessFormScreenState extends State<BuisnessFormScreen> {
     }
   }
 
+  int _selectedCategory = 1;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -301,16 +302,63 @@ class _BuisnessFormScreenState extends State<BuisnessFormScreen> {
                   keyboardType: TextInputType.number,
                 ),
                 const SizedBox(height: 16),
-                CommonTextField(
-                  labelText: 'Category',
-                  hintText: 'Enter the category',
-                  controller: _categoryController,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter a value';
-                    }
-                    return null;
-                  },
+                InputDecorator(
+                  decoration: InputDecoration(
+                    labelText: 'Category',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                      borderSide: const BorderSide(
+                          color: Color.fromARGB(255, 107, 4, 234)),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      // Set the enabled border color
+                      borderRadius: BorderRadius.circular(10.0),
+                      borderSide: const BorderSide(
+                          color: Color.fromARGB(255, 107, 4, 234)),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                      borderSide: const BorderSide(
+                          color: Color.fromARGB(255, 107, 4, 234)),
+                    ),
+                    errorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                      borderSide: const BorderSide(color: Colors.red),
+                    ),
+                    focusedErrorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                      borderSide: const BorderSide(color: Colors.red),
+                    ),
+                    contentPadding: EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 8,
+                    ),
+                  ),
+                  child: DropdownButtonHideUnderline(
+                    child: DropdownButton<int>(
+                      value: _selectedCategory,
+                      items: [
+                        DropdownMenuItem<int>(
+                          value: 1,
+                          child: Text('Travel'),
+                        ),
+                        DropdownMenuItem<int>(
+                          value: 2,
+                          child: Text('Sports'),
+                        ),
+                        DropdownMenuItem<int>(
+                          value: 3,
+                          child: Text('Fitness'),
+                        ),
+                      ],
+                      onChanged: (int? newValue) {
+                        setState(() {
+                          _selectedCategory =
+                              newValue ?? 1; // Default to 1 (Travel)
+                        });
+                      },
+                    ),
+                  ),
                 ),
                 const SizedBox(height: 16),
                 ElevatedButton(

@@ -10,6 +10,7 @@ import 'dart:convert';
 
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../Start-Screen/start_screen.dart';
 import 'investor_list.dart';
 
 class BuisnessScreen extends ConsumerStatefulWidget {
@@ -236,7 +237,7 @@ class _BuisnessScreenState extends ConsumerState<BuisnessScreen> {
         actions: [
           IconButton(
             onPressed: () {
-              Navigator.of(context).pop();
+              Navigator.pushNamed(context, StartScreen.routeName);
             },
             icon: const Icon(Icons.logout),
           ),
