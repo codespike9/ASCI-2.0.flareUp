@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_flareup/Investors/models/Investor_buisness.dart';
-import 'package:flutter_flareup/Investors/screen/in_buisness_details.dart';
+
 import 'package:flutter_flareup/Investors/screen/in_buisness_list.dart';
-import 'package:flutter_flareup/Investors/screen/in_buisnessdetails.dart';
 
 import 'package:flutter_flareup/Investors/screen/login_screen.dart';
-import 'package:flutter_flareup/Investors/screen/paymentpage.dart';
+
 import 'package:flutter_flareup/Investors/screen/signup_screen.dart';
-import 'package:flutter_flareup/Investors/screen/tabscreen.dart';
-import 'package:flutter_flareup/Investors/models/in_buisness_model.dart';
+
 import 'package:flutter_flareup/start-Up/screens/buisness_form.dart';
-import 'package:flutter_flareup/start-Up/screens/buisness_screen.dart';
+
 import 'package:flutter_flareup/start-Up/screens/buisness_sign_in.dart';
 
 import 'Investors/screen/bankdetails.dart';

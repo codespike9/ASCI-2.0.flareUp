@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'package:flutter_flareup/start-Up/models/buisness_company.dart';
 import 'package:flutter_flareup/start-Up/screens/buisness_form.dart';
 import 'package:flutter_flareup/start-Up/screens/update_list.dart';
@@ -8,6 +9,8 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 import 'package:url_launcher/url_launcher.dart';
+
+import 'investor_list.dart';
 
 class BuisnessScreen extends ConsumerStatefulWidget {
   const BuisnessScreen({super.key, required this.authToken});
@@ -124,7 +127,14 @@ class _BuisnessScreenState extends ConsumerState<BuisnessScreen> {
               // Investor details Button
               TextButton(
                 onPressed: () {
-                  Navigator.of(context).pop(); // Close the dialog
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => InvestedBuisnessList(
+                        id: business.id,
+                      ),
+                    ),
+                  );
                 },
                 child: const Row(
                   children: [
