@@ -18,6 +18,7 @@ class InvestorBusiness {
   final bool valid;
   final dynamic image;
   final int category;
+  final bool recomended;
 
   InvestorBusiness({
     required this.id,
@@ -39,6 +40,7 @@ class InvestorBusiness {
     required this.valid,
     required this.image,
     required this.category,
+    required this.recomended,
   });
 
   factory InvestorBusiness.fromJson(Map<String, dynamic> json) {
@@ -62,6 +64,7 @@ class InvestorBusiness {
       image: json['image'],
       category: json['category'],
       id: json['id'],
+      recomended: json['Recommended'],
     );
   }
 
@@ -86,6 +89,7 @@ class InvestorBusiness {
       'image': image,
       'category': category,
       'id': id,
+      'Recommended': recomended,
     };
   }
 }

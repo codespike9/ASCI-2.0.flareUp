@@ -62,6 +62,12 @@ class BusinessCard extends StatelessWidget {
                     'Sub-Category: ${business.industryCategory}',
                     const Color.fromARGB(255, 0, 45, 244),
                   ),
+                  if (business.recomended == true)
+                    _buildInfoRow(
+                      Icons.thumb_up,
+                      'Recommended',
+                      const Color.fromARGB(255, 143, 85, 218),
+                    ),
                 ],
               ),
             ),

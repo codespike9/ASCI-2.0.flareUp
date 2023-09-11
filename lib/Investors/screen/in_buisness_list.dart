@@ -36,11 +36,11 @@ class _BuisnessListState extends State<BuisnessList> {
         'Authorization': 'Token $authToken',
       },
     );
-    //print(authToken);
-    //print(response.body);
+    
 
     if (response.statusCode == 200) {
       final jsonData = json.decode(response.body);
+      print(jsonData);
       final List<dynamic> businessDataList = jsonData as List<dynamic>;
 
       setState(() {
