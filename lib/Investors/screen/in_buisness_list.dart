@@ -36,7 +36,6 @@ class _BuisnessListState extends State<BuisnessList> {
         'Authorization': 'Token $authToken',
       },
     );
-    
 
     if (response.statusCode == 200) {
       final jsonData = json.decode(response.body);
@@ -149,8 +148,8 @@ class _BuisnessListState extends State<BuisnessList> {
         decoration: const BoxDecoration(
           gradient: RadialGradient(
             colors: [
-              Color.fromARGB(242, 193, 228, 244),
-              Color.fromARGB(255, 252, 252, 252),
+              Color.fromARGB(176, 144, 104, 232),
+              Color.fromARGB(219, 255, 255, 255),
             ],
             center: Alignment.topLeft,
             radius: 1.2,

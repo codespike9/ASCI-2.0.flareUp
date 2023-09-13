@@ -125,7 +125,7 @@ class _PaymentPageState extends State<PaymentPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 183, 214, 239),
+      backgroundColor: const Color.fromARGB(255, 205, 183, 239),
       body: Center(
         child: Card(
           elevation: 5,

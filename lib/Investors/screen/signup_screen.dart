@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_flareup/Investors/screen/bankdetails.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -40,13 +41,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
       final response = await http.post(Uri.parse(apiUrl), body: requestBody);
 
       if (response.statusCode == 201) {
-        
-         final responseData = json.decode(response.body);
-      final token = responseData['token'];
+        final responseData = json.decode(response.body);
+        final token = responseData['token'];
 
-      final prefs = await SharedPreferences.getInstance();
-      prefs.setString('authToken', token);
-      print("Signup Successful, Token: $token");
+        final prefs = await SharedPreferences.getInstance();
+        prefs.setString('authToken', token);
+        print("Signup Successful, Token: $token");
 
         // ignore: use_build_context_synchronously
         ScaffoldMessenger.of(context).showSnackBar(
@@ -56,7 +56,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
           ),
         );
         // ignore: use_build_context_synchronously
-        Navigator.pushNamed(context, BankDetailsScreen.routeName , arguments: token);
+        Navigator.pushNamed(context, BankDetailsScreen.routeName,
+            arguments: token);
       } else {
         // Registration failed, you might want to show an error message
         // ignore: use_build_context_synchronously
@@ -81,10 +82,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
         child: Container(
           padding: const EdgeInsets.all(17),
           decoration: const BoxDecoration(
-            gradient: RadialGradient(
-              colors: [Color.fromARGB(255, 156, 209, 234), Colors.white],
-              center: Alignment.bottomRight,
-              radius: 2.4,
+            gradient: LinearGradient(
+              colors: [
+                Color.fromARGB(176, 144, 104, 232),
+                Color.fromARGB(219, 255, 255, 255),
+              ], // Set your gradient colors
+              begin: Alignment.topRight,
+              end: Alignment.bottomCenter,
             ),
           ),
           child: Form(
@@ -92,6 +96,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
             child: SingleChildScrollView(
               child: Column(
                 children: [
+                  const SizedBox(
+                    height: 45,
+                  ),
+                  Text(
+                    'Sign-up Page',
+                    style: GoogleFonts.workSans(fontSize: 30),
+                  ),
                   const SizedBox(
                     height: 45,
                   ),
@@ -105,8 +116,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         // Border color when focused
                       ),
                       enabledBorder: OutlineInputBorder(
-                        borderSide:
-                            const BorderSide(color: Colors.grey, width: 1.5),
+                        borderSide: const BorderSide(
+                            color: Color.fromARGB(255, 0, 0, 0), width: 1.5),
                         borderRadius: BorderRadius.circular(
                             10.0), // Border color when enabled
                       ),
@@ -146,8 +157,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         // Border color when focused
                       ),
                       enabledBorder: OutlineInputBorder(
-                        borderSide:
-                            const BorderSide(color: Colors.grey, width: 1.5),
+                        borderSide: const BorderSide(
+                            color: Color.fromARGB(255, 0, 0, 0), width: 1.5),
                         borderRadius: BorderRadius.circular(
                             10.0), // Border color when enabled
                       ),
@@ -187,8 +198,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         // Border color when focused
                       ),
                       enabledBorder: OutlineInputBorder(
-                        borderSide:
-                            const BorderSide(color: Colors.grey, width: 1.5),
+                        borderSide: const BorderSide(
+                            color: Color.fromARGB(255, 0, 0, 0), width: 1.5),
                         borderRadius: BorderRadius.circular(
                             10.0), // Border color when enabled
                       ),
@@ -228,8 +239,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             10.0), // Border color when focused
                       ),
                       enabledBorder: OutlineInputBorder(
-                        borderSide:
-                            const BorderSide(color: Colors.grey, width: 1.5),
+                        borderSide: const BorderSide(
+                            color: Color.fromARGB(255, 0, 0, 0), width: 1.5),
                         borderRadius: BorderRadius.circular(
                             10.0), // Border color when enabled
                       ),
@@ -272,8 +283,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             10.0), // Border color when focused
                       ),
                       enabledBorder: OutlineInputBorder(
-                        borderSide:
-                            const BorderSide(color: Colors.grey, width: 1.5),
+                        borderSide: const BorderSide(
+                            color: Color.fromARGB(255, 0, 0, 0), width: 1.5),
                         borderRadius: BorderRadius.circular(
                             10.0), // Border color when enabled
                       ),
@@ -311,7 +322,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     children: [
                       ElevatedButton(
                         onPressed: _saveInfo,
-                        child: const Text('Save'),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.black, // Background color
+                          shape: RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.circular(10.0), // Rounded corners
+                          ),
+                        ),
+                        child: const Text(
+                          'Save',
+                          style: TextStyle(color: Colors.white),
+                        ),
                       ),
                       const SizedBox(
                         width: 15,
@@ -320,7 +341,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         onPressed: () {
                           Navigator.pop(context);
                         },
-                        child: const Text('Cancel'),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.black, // Background color
+                          shape: RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.circular(10.0), // Rounded corners
+                          ),
+                        ),
+                        child: const Text(
+                          'Cancel',
+                          style: TextStyle(color: Colors.white),
+                        ),
                       )
                     ],
                   )

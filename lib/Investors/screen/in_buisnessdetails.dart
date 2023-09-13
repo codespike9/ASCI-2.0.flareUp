@@ -108,15 +108,16 @@ class _BuisnessDetailsState extends State<BuisnessDetails> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             // Display the image at the top
-            Image.asset(
-              'assets/images/dummyimage.jpg', // Replace with your image path
-              height: 200, // Adjust the height as needed
-              fit: BoxFit.cover,
-            ),
+            // Image.network(
+            //   widget.business.image, // Replace with your image path
+            //   height: 200, // Adjust the height as needed
+            //   fit: BoxFit.cover,
+            // ),
+            _buildImage(),
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                //crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
                     width: MediaQuery.of(context).size.width - 10,
@@ -125,8 +126,8 @@ class _BuisnessDetailsState extends State<BuisnessDetails> {
                     decoration: BoxDecoration(
                       gradient: const LinearGradient(
                         colors: [
-                          Color.fromARGB(184, 201, 240, 236),
-                          Color.fromARGB(219, 255, 255, 255)
+                          Color.fromARGB(165, 202, 189, 229),
+                          Color.fromARGB(219, 255, 255, 255),
                         ],
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
@@ -139,10 +140,12 @@ class _BuisnessDetailsState extends State<BuisnessDetails> {
                           BorderRadius.circular(8.0), // Rounded corners
                     ),
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
+                      //mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Text(
                           'Main Information',
+                          textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: 18,
                             decoration: TextDecoration.underline,
@@ -197,8 +200,8 @@ class _BuisnessDetailsState extends State<BuisnessDetails> {
                     decoration: BoxDecoration(
                       gradient: const LinearGradient(
                         colors: [
-                          Color.fromARGB(184, 201, 240, 236),
-                          Color.fromARGB(219, 255, 255, 255)
+                          Color.fromARGB(165, 202, 189, 229),
+                          Color.fromARGB(219, 255, 255, 255),
                         ],
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
@@ -224,7 +227,7 @@ class _BuisnessDetailsState extends State<BuisnessDetails> {
                     decoration: BoxDecoration(
                       gradient: const LinearGradient(
                         colors: [
-                          Color.fromARGB(184, 201, 240, 236),
+                          Color.fromARGB(165, 202, 189, 229),
                           Color.fromARGB(219, 255, 255, 255),
                         ],
                         begin: Alignment.topLeft,
@@ -310,8 +313,8 @@ class _BuisnessDetailsState extends State<BuisnessDetails> {
                     decoration: BoxDecoration(
                       gradient: const LinearGradient(
                         colors: [
-                          Color.fromARGB(184, 201, 240, 236),
-                          Color.fromARGB(219, 255, 255, 255)
+                          Color.fromARGB(165, 202, 189, 229),
+                          Color.fromARGB(219, 255, 255, 255),
                         ],
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
@@ -324,6 +327,7 @@ class _BuisnessDetailsState extends State<BuisnessDetails> {
                           BorderRadius.circular(8.0), // Rounded corners
                     ),
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Text(
                           'Finance Information',
@@ -478,5 +482,30 @@ class _BuisnessDetailsState extends State<BuisnessDetails> {
         ),
       ),
     );
+  }
+
+  Widget _buildImage() {
+    String baseUrl =
+        'http://dharmarajjena.pythonanywhere.com'; // Replace with your backend's base URL
+    String imageUrl =
+        widget.business.image ?? '/media/cover_images/Alzeimers.jpg';
+    // Use the business image URL if available, or the dummy image URL as a fallback
+
+    String completeImageUrl = baseUrl + imageUrl;
+    if (widget.business.image != null) {
+      return Image.network(
+        completeImageUrl,
+        height: 200,
+        width: double.infinity,
+        fit: BoxFit.cover,
+      );
+    } else {
+      return Image.asset(
+        'assets/images/dummyimage.jpg',
+        height: 200,
+        width: double.infinity,
+        fit: BoxFit.cover,
+      );
+    }
   }
 }

@@ -202,5 +202,5 @@ class _YourInvestmentPageState extends State<YourInvestmentPage> {
 TextStyle titleTextStyle = GoogleFonts.lato(
   fontSize: 16.0,
   fontWeight: FontWeight.w500,
-  color: Color.fromARGB(226, 43, 5, 236),
+  color: const Color.fromARGB(226, 43, 5, 236),
 );

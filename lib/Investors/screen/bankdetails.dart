@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_flareup/Investors/screen/login_screen.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 
 class BankDetailsScreen extends StatelessWidget {
@@ -63,250 +64,136 @@ class BankDetailsScreen extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.all(17),
           decoration: const BoxDecoration(
-            gradient: RadialGradient(
-              colors: [Color.fromARGB(255, 156, 209, 234), Colors.white],
-              center: Alignment.bottomRight,
-              radius: 2.4,
+            gradient: LinearGradient(
+              colors: [
+                Color.fromARGB(176, 144, 104, 232),
+                Color.fromARGB(219, 255, 255, 255),
+              ], // Set your gradient colors
+              begin: Alignment.topRight,
+              end: Alignment.bottomCenter,
             ),
           ),
-          child: Form(
-            key: _Key,
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  const SizedBox(
-                    height: 45,
-                  ),
-                  TextFormField(
-                    decoration: InputDecoration(
-                      labelText: 'Account Number',
-                      focusedBorder: OutlineInputBorder(
-                        borderSide:
-                            const BorderSide(color: Colors.blue, width: 2.0),
-                        borderRadius: BorderRadius.circular(10.0),
-                        // Border color when focused
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderSide:
-                            const BorderSide(color: Colors.grey, width: 1.5),
-                        borderRadius: BorderRadius.circular(
-                            10.0), // Border color when enabled
-                      ),
-                      errorBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(color: Colors.red),
-                        borderRadius: BorderRadius.circular(
-                            10.0), // Border color when error
-                      ),
-                      focusedErrorBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(
-                            color: Colors.red,
-                            width: 2.0), // Adjust the border width
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
+          child: Center(
+            child: Form(
+              key: _Key,
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Text(
+                      'Bank Details',
+                      style: GoogleFonts.workSans(
+                          fontSize: 30, fontWeight: FontWeight.w700),
                     ),
-                    keyboardType: TextInputType.number,
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Please enter your bank account number';
-                      }
-                      return null;
-                    },
-                    onSaved: (value) {
-                      _accountno = value!;
-                    },
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  TextFormField(
-                    decoration: InputDecoration(
-                      labelText: 'ifsc code',
-                      focusedBorder: OutlineInputBorder(
-                        borderSide:
-                            const BorderSide(color: Colors.blue, width: 2.0),
-                        borderRadius: BorderRadius.circular(10.0),
-                        // Border color when focused
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderSide:
-                            const BorderSide(color: Colors.grey, width: 1.5),
-                        borderRadius: BorderRadius.circular(
-                            10.0), // Border color when enabled
-                      ),
-                      errorBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(color: Colors.red),
-                        borderRadius: BorderRadius.circular(
-                            10.0), // Border color when error
-                      ),
-                      focusedErrorBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(
-                            color: Colors.red,
-                            width: 2.0), // Adjust the border width
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
+                    const SizedBox(
+                      height: 45,
                     ),
-                    keyboardType: TextInputType.streetAddress,
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Please enter your ifsc code';
-                      }
-                      return null;
-                    },
-                    onSaved: (value) {
-                      _ifsc = value!;
-                    },
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  /*TextFormField(
-                    decoration: InputDecoration(
-                      labelText: 'Username',
-                      focusedBorder: OutlineInputBorder(
-                        borderSide:
-                            const BorderSide(color: Colors.blue, width: 2.0),
-                        borderRadius: BorderRadius.circular(10.0),
-                        // Border color when focused
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderSide:
-                            const BorderSide(color: Colors.grey, width: 1.5),
-                        borderRadius: BorderRadius.circular(
-                            10.0), // Border color when enabled
-                      ),
-                      errorBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(color: Colors.red),
-                        borderRadius: BorderRadius.circular(
-                            10.0), // Border color when error
-                      ),
-                      focusedErrorBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(
-                            color: Colors.red,
-                            width: 2.0), // Adjust the border width
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
+                    const SizedBox(
+                      height: 45,
                     ),
-                    keyboardType: TextInputType.name,
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Please enter your Username';
-                      }
-                      return null;
-                    },
-                    onSaved: (value) {
-                      _username = value!;
-                    },
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  TextFormField(
-                    decoration: InputDecoration(
-                      labelText: 'Email',
-                      focusedBorder: OutlineInputBorder(
-                        borderSide:
-                            const BorderSide(color: Colors.blue, width: 2.0),
-                        borderRadius: BorderRadius.circular(
-                            10.0), // Border color when focused
+                    TextFormField(
+                      decoration: InputDecoration(
+                        labelText: 'Account Number',
+                        focusedBorder: OutlineInputBorder(
+                          borderSide:
+                              const BorderSide(color: Colors.blue, width: 2.0),
+                          borderRadius: BorderRadius.circular(10.0),
+                          // Border color when focused
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: const BorderSide(
+                              color: Color.fromARGB(255, 0, 0, 0), width: 1.5),
+                          borderRadius: BorderRadius.circular(
+                              10.0), // Border color when enabled
+                        ),
+                        errorBorder: OutlineInputBorder(
+                          borderSide: const BorderSide(color: Colors.red),
+                          borderRadius: BorderRadius.circular(
+                              10.0), // Border color when error
+                        ),
+                        focusedErrorBorder: OutlineInputBorder(
+                          borderSide: const BorderSide(
+                              color: Colors.red,
+                              width: 2.0), // Adjust the border width
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
                       ),
-                      enabledBorder: OutlineInputBorder(
-                        borderSide:
-                            const BorderSide(color: Colors.grey, width: 1.5),
-                        borderRadius: BorderRadius.circular(
-                            10.0), // Border color when enabled
-                      ),
-                      errorBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(color: Colors.red),
-                        borderRadius: BorderRadius.circular(
-                            10.0), // Border color when error
-                      ),
-                      focusedErrorBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(
-                            color: Colors.red,
-                            width: 2.0), // Adjust the border width
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
+                      keyboardType: TextInputType.number,
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Please enter your bank account number';
+                        }
+                        return null;
+                      },
+                      onSaved: (value) {
+                        _accountno = value!;
+                      },
                     ),
-                    keyboardType: TextInputType.emailAddress,
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Please enter your email address';
-                      }
-                      if (!value.contains('@')) {
-                        return 'Please enter a valid email address';
-                      }
-                      return null;
-                    },
-                    onSaved: (value) {
-                      _email = value!;
-                    },
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  TextFormField(
-                    decoration: InputDecoration(
-                      labelText: 'Password',
-                      focusedBorder: OutlineInputBorder(
-                        borderSide:
-                            const BorderSide(color: Colors.blue, width: 2.0),
-                        borderRadius: BorderRadius.circular(
-                            10.0), // Border color when focused
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderSide:
-                            const BorderSide(color: Colors.grey, width: 1.5),
-                        borderRadius: BorderRadius.circular(
-                            10.0), // Border color when enabled
-                      ),
-                      errorBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(color: Colors.red),
-                        borderRadius: BorderRadius.circular(
-                            10.0), // Border color when error
-                      ),
-                      focusedErrorBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(
-                            color: Colors.red,
-                            width: 2.0), // Adjust the border width
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
+                    const SizedBox(
+                      height: 20,
                     ),
-                    obscureText: true,
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Please enter a password';
-                      }
-                      if (value.length < 6) {
-                        return 'Enter a password of more than 6 characters';
-                      }
-                      return null;
-                    },
-                    onSaved: (value) {
-                      _password = value!;
-                    },
-                  ),*/
-                  const SizedBox(
-                    height: 40,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      ElevatedButton(
-                        onPressed: _saveInfo,
-                        child: const Text('Save'),
+                    TextFormField(
+                      decoration: InputDecoration(
+                        labelText: 'ifsc code',
+                        focusedBorder: OutlineInputBorder(
+                          borderSide:
+                              const BorderSide(color: Colors.blue, width: 2.0),
+                          borderRadius: BorderRadius.circular(10.0),
+                          // Border color when focused
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: const BorderSide(
+                              color: Color.fromARGB(255, 0, 0, 0), width: 1.5),
+                          borderRadius: BorderRadius.circular(
+                              10.0), // Border color when enabled
+                        ),
+                        errorBorder: OutlineInputBorder(
+                          borderSide: const BorderSide(color: Colors.red),
+                          borderRadius: BorderRadius.circular(
+                              10.0), // Border color when error
+                        ),
+                        focusedErrorBorder: OutlineInputBorder(
+                          borderSide: const BorderSide(
+                              color: Colors.red,
+                              width: 2.0), // Adjust the border width
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
                       ),
-                      const SizedBox(
-                        width: 15,
-                      ),
-                      ElevatedButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        child: const Text('Cancel'),
-                      )
-                    ],
-                  )
-                ],
+                      keyboardType: TextInputType.streetAddress,
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Please enter your ifsc code';
+                        }
+                        return null;
+                      },
+                      onSaved: (value) {
+                        _ifsc = value!;
+                      },
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    const SizedBox(
+                      height: 40,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        ElevatedButton(
+                          onPressed: _saveInfo,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.black, // Background color
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(
+                                  10.0), // Rounded corners
+                            ),
+                          ),
+                          child: const Text('Save',
+                              style: TextStyle(color: Colors.white)),
+                        ),
+                      ],
+                    )
+                  ],
+                ),
               ),
             ),
           ),

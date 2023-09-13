@@ -14,7 +14,10 @@ class StartScreen extends StatelessWidget {
       body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
-            colors: [Color.fromARGB(255, 185, 227, 246), Colors.white],
+            colors: [
+              Color.fromARGB(176, 144, 104, 232),
+              Color.fromARGB(219, 255, 255, 255),
+            ],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
@@ -28,7 +31,7 @@ class StartScreen extends StatelessWidget {
                 Text(
                   'FlareUp',
                   style: GoogleFonts.pacifico(
-                      color: const Color.fromARGB(185, 24, 76, 179),
+                      color: const Color.fromARGB(210, 24, 76, 179),
                       fontSize: 55,
                       fontWeight: FontWeight.w500),
                 ),

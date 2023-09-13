@@ -75,10 +75,10 @@ class _LoginScreenState extends State<LoginScreen> {
         decoration: const BoxDecoration(
           gradient: LinearGradient(
             colors: [
-              Color.fromARGB(255, 156, 209, 234),
-              Colors.white
+              Color.fromARGB(176, 144, 104, 232),
+              Color.fromARGB(219, 255, 255, 255),
             ], // Set your gradient colors
-            begin: Alignment.topCenter,
+            begin: Alignment.topRight,
             end: Alignment.bottomCenter,
           ),
         ),
@@ -88,7 +88,7 @@ class _LoginScreenState extends State<LoginScreen> {
               padding: const EdgeInsets.only(left: 35, top: 130),
               child: Text(
                 'Welcome\nBack',
-                style: GoogleFonts.oswald(
+                style: GoogleFonts.workSans(
                   textStyle: const TextStyle(
                     color: Color.fromARGB(255, 0, 0, 0),
                     fontSize: 33,
@@ -160,24 +160,26 @@ class _LoginScreenState extends State<LoginScreen> {
                                   Navigator.pushNamed(
                                       context, SignUpScreen.routeName);
                                 },
-                                child: const Text(
+                                child: Text(
                                   'Sign Up',
                                   textAlign: TextAlign.left,
-                                  style: TextStyle(
+                                  style: GoogleFonts.notoSans(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w600,
                                     decoration: TextDecoration.underline,
-                                    color: Color(0xff4c505b),
-                                    fontSize: 18,
+                                    color: const Color(0xff4c505b),
                                   ),
                                 ),
                               ),
                               TextButton(
                                 onPressed: () {},
-                                child: const Text(
+                                child: Text(
                                   'Forgot Password',
-                                  style: TextStyle(
+                                  style: GoogleFonts.notoSans(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w600,
                                     decoration: TextDecoration.underline,
-                                    color: Color(0xff4c505b),
-                                    fontSize: 18,
+                                    color: const Color(0xff4c505b),
                                   ),
                                 ),
                               ),

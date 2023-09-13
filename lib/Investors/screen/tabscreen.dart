@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_flareup/Investors/pages/blog_page.dart';
-//import 'package:flutter_flareup/Investors/pages/home_page.dart';
+
 import 'package:flutter_flareup/Investors/pages/profile_page.dart';
-//import 'package:flutter_flareup/Investors/data/in_business_data.dart';
+
 import 'package:flutter_flareup/Investors/screen/in_buisness_list.dart';
 
 class InvestorTabScreen extends StatefulWidget {
@@ -29,7 +28,6 @@ class _InvestorTabScreenState extends State<InvestorTabScreen> {
     // Assign the list of pages to the existing _pages variable
     _pages = [
       BuisnessList(authToken: widget.authToken),
-      const BlogPage(),
       YourInvestmentPage(
         authToken: widget.authToken,
       ),
@@ -56,10 +54,6 @@ class _InvestorTabScreenState extends State<InvestorTabScreen> {
           BottomNavigationBarItem(
             icon: Icon(Icons.business_rounded),
             label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.note_alt),
-            label: 'Blog',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person_2),
