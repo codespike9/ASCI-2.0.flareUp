@@ -32,7 +32,7 @@ class AuthService {
         'gender': user.gender,
         'mobile_number': user.phoneNo,
         'office_number': user.officeNo,
-        'foco': user.foco,
+        
         'designation': user.designation,
         'state': user.state,
         'city': user.city,

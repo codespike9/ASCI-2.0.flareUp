@@ -8,7 +8,7 @@ class CompanyUser {
   final String gender;
   final String phoneNo;
   final String officeNo;
-  final String foco;
+
   final String designation;
   final String state;
   final String city;
@@ -27,7 +27,6 @@ class CompanyUser {
     required this.gender,
     required this.phoneNo,
     required this.officeNo,
-    required this.foco,
     required this.designation,
     required this.state,
     required this.city,
@@ -47,7 +46,6 @@ class CompanyUser {
       'gender': gender,
       'phoneNo': phoneNo,
       'officeNo': officeNo,
-      'foco': foco,
       'designation': designation,
       'state': state,
       'city': city,
@@ -56,4 +54,3 @@ class CompanyUser {
     };
   }
 }
-

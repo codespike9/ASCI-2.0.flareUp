@@ -155,16 +155,20 @@ class _BuisnessListState extends State<BuisnessList> {
             radius: 1.2,
           ),
         ),
-        child: ListView.builder(
-          itemCount: businessList.length,
-          itemBuilder: (context, index) {
-            final business = businessList[index];
-            return BusinessCard(
-              business: business,
-              authToken: widget.authToken,
-            );
-          },
-        ),
+        child: businessList.isEmpty
+            ? const Center(
+                child: Text("No buisness is available to invest"),
+              )
+            : ListView.builder(
+                itemCount: businessList.length,
+                itemBuilder: (context, index) {
+                  final business = businessList[index];
+                  return BusinessCard(
+                    business: business,
+                    authToken: widget.authToken,
+                  );
+                },
+              ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {

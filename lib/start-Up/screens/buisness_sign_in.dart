@@ -65,7 +65,7 @@ class _BuisnessSigninScreenState extends ConsumerState<BuisnessSigninScreen> {
   final TextEditingController _genderController = TextEditingController();
   final TextEditingController _phonenoController = TextEditingController();
   final TextEditingController _officenoController = TextEditingController();
-  final TextEditingController _focoController = TextEditingController();
+
   final TextEditingController _designationController = TextEditingController();
   final TextEditingController _statenameController = TextEditingController();
   final TextEditingController _citynameController = TextEditingController();
@@ -82,7 +82,7 @@ class _BuisnessSigninScreenState extends ConsumerState<BuisnessSigninScreen> {
     _genderController.dispose();
     _phonenoController.dispose();
     _officenoController.dispose();
-    _focoController.dispose();
+
     _designationController.dispose();
     _statenameController.dispose();
     _citynameController.dispose();
@@ -291,8 +291,8 @@ class _BuisnessSigninScreenState extends ConsumerState<BuisnessSigninScreen> {
                               height: 6,
                             ),
                             SigninTextField(
-                              hintText: "DOB(ddmmyyyy)",
-                              keyboardType: TextInputType.datetime,
+                              hintText: "DOB(yyyy-mm-dd)",
+                              keyboardType: TextInputType.text,
                               obscureText: false,
                               prefixIcon: Icons.calendar_month,
                               controller: _dobController,
@@ -335,14 +335,6 @@ class _BuisnessSigninScreenState extends ConsumerState<BuisnessSigninScreen> {
                             ),
                             const SizedBox(height: 6),
                             SigninTextField(
-                              hintText: "Founder/Cofounder Name",
-                              keyboardType: TextInputType.text,
-                              obscureText: false,
-                              prefixIcon: Icons.group,
-                              controller: _focoController,
-                            ),
-                            const SizedBox(height: 6),
-                            SigninTextField(
                               hintText: "Designation in Business",
                               keyboardType: TextInputType.text,
                               obscureText: false,
@@ -362,21 +354,21 @@ class _BuisnessSigninScreenState extends ConsumerState<BuisnessSigninScreen> {
                                 hintText: "City",
                                 keyboardType: TextInputType.name,
                                 obscureText: false,
-                                prefixIcon: Icons.location_off_sharp,
+                                prefixIcon: Icons.location_city,
                                 controller: _citynameController),
                             const SizedBox(height: 6),
                             SigninTextField(
                                 hintText: "office-addr",
                                 keyboardType: TextInputType.streetAddress,
                                 obscureText: false,
-                                prefixIcon: Icons.location_off_sharp,
+                                prefixIcon: Icons.location_city,
                                 controller: _officeaddController),
                             const SizedBox(height: 6),
                             SigninTextField(
                                 hintText: "office-pincode",
                                 keyboardType: TextInputType.number,
                                 obscureText: false,
-                                prefixIcon: Icons.location_off_sharp,
+                                prefixIcon: Icons.location_city,
                                 controller: _officepinController),
                           ],
                         ),
@@ -451,7 +443,6 @@ class _BuisnessSigninScreenState extends ConsumerState<BuisnessSigninScreen> {
                     gender: _genderController.text,
                     phoneNo: _phonenoController.text,
                     officeNo: _officenoController.text,
-                    foco: _focoController.text,
                     designation: _designationController.text,
                     state: _statenameController.text,
                     city: _citynameController.text,

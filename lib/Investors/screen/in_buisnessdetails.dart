@@ -107,12 +107,6 @@ class _BuisnessDetailsState extends State<BuisnessDetails> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            // Display the image at the top
-            // Image.network(
-            //   widget.business.image, // Replace with your image path
-            //   height: 200, // Adjust the height as needed
-            //   fit: BoxFit.cover,
-            // ),
             _buildImage(),
             Padding(
               padding: const EdgeInsets.all(16.0),
@@ -170,7 +164,7 @@ class _BuisnessDetailsState extends State<BuisnessDetails> {
                         ),
                         const SizedBox(height: 12),
                         Text(
-                          'Equity Available: ${widget.business.equity}',
+                          'Equity Available: ${widget.business.equity}%',
                           style: const TextStyle(
                             fontSize: 16,
                           ),
@@ -381,7 +375,7 @@ class _BuisnessDetailsState extends State<BuisnessDetails> {
                     children: [
                       GestureDetector(
                         onTap: () {
-                          // Unfocus the text field when tapping on the background
+                          
                           FocusScope.of(context).unfocus();
                         },
                         child: Container(
@@ -406,8 +400,7 @@ class _BuisnessDetailsState extends State<BuisnessDetails> {
                         child: TextFormField(
                           decoration: const InputDecoration(
                             labelText: 'Equity to Buy (%)',
-                            border:
-                                InputBorder.none, // Remove the default border
+                            border: InputBorder.none,
                             prefixIcon:
                                 Icon(Icons.pie_chart, color: Colors.blue),
                             suffixIcon: Padding(
@@ -428,9 +421,12 @@ class _BuisnessDetailsState extends State<BuisnessDetails> {
                           controller: _equityController,
                           keyboardType: TextInputType.number,
                           onChanged: (value) {
-                            setState(() {
-                              equityToBuy = double.tryParse(value) ?? 0.0;
-                            });
+                            final enteredValue = double.tryParse(value) ?? 0.0;
+                            if (enteredValue <= widget.business.equity) {
+                              setState(() {
+                                equityToBuy = enteredValue;
+                              });
+                            } else {}
                           },
                         ),
                       ),

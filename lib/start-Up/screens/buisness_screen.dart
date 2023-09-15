@@ -99,10 +99,16 @@ class _BuisnessScreenState extends ConsumerState<BuisnessScreen> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                Text(
-                  'Description: ${business.description}',
-                  style: GoogleFonts.openSans(
-                    fontSize: 16,
+                SizedBox(
+                  height: 70,
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.vertical,
+                    child: Text(
+                      'Description: ${business.description}',
+                      style: GoogleFonts.openSans(
+                        fontSize: 16,
+                      ),
+                    ),
                   ),
                 ),
                 InkWell(
@@ -254,90 +260,100 @@ class _BuisnessScreenState extends ConsumerState<BuisnessScreen> {
         },
         child: const Icon(Icons.add),
       ),
-      body: ListView.builder(
-        itemCount: submittedBusinesses.length,
-        itemBuilder: (context, index) {
-          var business = submittedBusinesses[index];
+      body: submittedBusinesses.isEmpty
+          ? const Center(
+              child: Text("No business is registered"),
+            )
+          : ListView.builder(
+              itemCount: submittedBusinesses.length,
+              itemBuilder: (context, index) {
+                var business = submittedBusinesses[index];
 
-          return Card(
-            elevation: 4, // Adjust the elevation value as needed
-            shadowColor: Colors.black, // You can customize the shadow color
-            shape: RoundedRectangleBorder(
-              borderRadius:
-                  BorderRadius.circular(10), // Adjust the circle radius
-            ),
-            child: GestureDetector(
-              onTap: () {
-                _showBusinessDetails(context, business);
-              },
-              child: ListTile(
-                leading: business.image != null
-                    ? Container(
-                        width: 50, // Adjust the width and height as needed
-                        height: 50,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Colors.blue, // You can set your desired color
-                          boxShadow: [
-                            BoxShadow(
-                              color:
-                                  Colors.grey.withOpacity(0.5), // Shadow color
-                              spreadRadius: 2, // Spread radius
-                              blurRadius: 5, // Blur radius
-                              offset: const Offset(0, 3), // Offset
+                return Card(
+                  elevation: 4, // Adjust the elevation value as needed
+                  shadowColor:
+                      Colors.black, // You can customize the shadow color
+                  shape: RoundedRectangleBorder(
+                    borderRadius:
+                        BorderRadius.circular(10), // Adjust the circle radius
+                  ),
+                  child: GestureDetector(
+                    onTap: () {
+                      _showBusinessDetails(context, business);
+                    },
+                    child: ListTile(
+                      leading: business.image != null
+                          ? Container(
+                              width:
+                                  50, // Adjust the width and height as needed
+                              height: 50,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Colors
+                                    .blue, // You can set your desired color
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey
+                                        .withOpacity(0.5), // Shadow color
+                                    spreadRadius: 2, // Spread radius
+                                    blurRadius: 5, // Blur radius
+                                    offset: const Offset(0, 3), // Offset
+                                  ),
+                                ],
+                              ),
+                              child: Image.network(
+                                baseUrl + business.image!, // Use the image URL
+                                width: 30, // Adjust the image size
+                                height: 30,
+                                fit: BoxFit.cover, // Adjust the fit as needed
+                              ),
+                            )
+                          : Container(
+                              width:
+                                  50, // Adjust the width and height as needed
+                              height: 50,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Colors
+                                    .blue, // You can set your desired color
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey
+                                        .withOpacity(0.5), // Shadow color
+                                    spreadRadius: 2, // Spread radius
+                                    blurRadius: 5, // Blur radius
+                                    offset: const Offset(0, 3), // Offset
+                                  ),
+                                ],
+                              ),
+                              child: const Center(
+                                child: Icon(
+                                  Icons
+                                      .business, // You can replace this with your image
+                                  color: Colors.white, // Icon color
+                                  size: 30, // Icon size
+                                ),
+                              ),
                             ),
-                          ],
-                        ),
-                        child: Image.network(
-                          baseUrl + business.image!, // Use the image URL
-                          width: 30, // Adjust the image size
-                          height: 30,
-                          fit: BoxFit.cover, // Adjust the fit as needed
-                        ),
-                      )
-                    : Container(
-                        width: 50, // Adjust the width and height as needed
-                        height: 50,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Colors.blue, // You can set your desired color
-                          boxShadow: [
-                            BoxShadow(
-                              color:
-                                  Colors.grey.withOpacity(0.5), // Shadow color
-                              spreadRadius: 2, // Spread radius
-                              blurRadius: 5, // Blur radius
-                              offset: const Offset(0, 3), // Offset
-                            ),
-                          ],
-                        ),
-                        child: const Center(
-                          child: Icon(
-                            Icons
-                                .business, // You can replace this with your image
-                            color: Colors.white, // Icon color
-                            size: 30, // Icon size
-                          ),
+                      title: Text(
+                        business.companyName,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
-                title: Text(
-                  business.companyName,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
+                      subtitle: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("Business Stage: ${business.businessStage}"),
+                          Text(
+                              "Industry Category: ${business.industryCategory}"),
+                        ],
+                      ),
+                    ),
                   ),
-                ),
-                subtitle: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text("Business Stage: ${business.businessStage}"),
-                    Text("Industry Category: ${business.industryCategory}"),
-                  ],
-                ),
-              ),
+                );
+              },
             ),
-          );
-        },
-      ),
     );
   }
 }
