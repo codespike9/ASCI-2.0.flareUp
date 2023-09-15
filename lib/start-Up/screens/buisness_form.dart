@@ -329,7 +329,7 @@ class _BuisnessFormScreenState extends State<BuisnessFormScreen> {
                       borderRadius: BorderRadius.circular(10.0),
                       borderSide: const BorderSide(color: Colors.red),
                     ),
-                    contentPadding: EdgeInsets.symmetric(
+                    contentPadding: const EdgeInsets.symmetric(
                       horizontal: 12,
                       vertical: 8,
                     ),
@@ -337,18 +337,34 @@ class _BuisnessFormScreenState extends State<BuisnessFormScreen> {
                   child: DropdownButtonHideUnderline(
                     child: DropdownButton<int>(
                       value: _selectedCategory,
-                      items: [
+                      items: const [
                         DropdownMenuItem<int>(
                           value: 1,
                           child: Text('Travel'),
                         ),
                         DropdownMenuItem<int>(
-                          value: 2,
-                          child: Text('Sports'),
+                          value: 4,
+                          child: Text('FMCG'),
                         ),
                         DropdownMenuItem<int>(
-                          value: 3,
-                          child: Text('Fitness'),
+                          value: 5,
+                          child: Text('Fin-Tech'),
+                        ),
+                        DropdownMenuItem<int>(
+                          value: 6,
+                          child: Text('Ed-Tech'),
+                        ),
+                        DropdownMenuItem<int>(
+                          value: 7,
+                          child: Text('E-Commerece'),
+                        ),
+                        DropdownMenuItem<int>(
+                          value: 8,
+                          child: Text('Social'),
+                        ),
+                        DropdownMenuItem<int>(
+                          value: 9,
+                          child: Text('Health-Tech'),
                         ),
                       ],
                       onChanged: (int? newValue) {
