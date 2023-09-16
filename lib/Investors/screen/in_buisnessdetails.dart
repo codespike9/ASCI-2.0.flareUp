@@ -375,7 +375,6 @@ class _BuisnessDetailsState extends State<BuisnessDetails> {
                     children: [
                       GestureDetector(
                         onTap: () {
-                          
                           FocusScope.of(context).unfocus();
                         },
                         child: Container(
@@ -422,11 +421,10 @@ class _BuisnessDetailsState extends State<BuisnessDetails> {
                           keyboardType: TextInputType.number,
                           onChanged: (value) {
                             final enteredValue = double.tryParse(value) ?? 0.0;
-                            if (enteredValue <= widget.business.equity) {
-                              setState(() {
-                                equityToBuy = enteredValue;
-                              });
-                            } else {}
+                            // if (enteredValue <= widget.business.equity) {
+                            setState(() {
+                              equityToBuy = enteredValue;
+                            });
                           },
                         ),
                       ),
@@ -448,7 +446,30 @@ class _BuisnessDetailsState extends State<BuisnessDetails> {
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 3),
               child: ElevatedButton(
                 onPressed: () {
-                  postDataToAPI();
+                  final equityenteredValue =
+                      double.tryParse(widget.business.equity) ?? 0.0;
+                  if (equityToBuy <= equityenteredValue) {
+                    postDataToAPI();
+                  } else {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: Text('Invalid Equity'),
+                          content: Text(
+                              'Enter equity less or equal to available equity.'),
+                          actions: <Widget>[
+                            TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: Text('OK'),
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  }
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color.fromARGB(229, 56, 169, 60),
