@@ -20,7 +20,7 @@ class _BuisnessListState extends State<BuisnessList> {
   List<InvestorBusiness> originalBusinessList = [];
 
   RangeValues valuationRange =
-      const RangeValues(100000, 2000000); // 1 lakh to 20 lakh
+      const RangeValues(100000, 3500000); // 1 lakh to 20 lakh
 
   @override
   void initState() {
@@ -70,7 +70,7 @@ class _BuisnessListState extends State<BuisnessList> {
                   RangeSlider(
                     values: newRange,
                     min: 100000,
-                    max: 2000000,
+                    max: 3500000,
                     divisions: 100,
                     onChanged: (RangeValues values) {
                       setState(() {
@@ -126,7 +126,7 @@ class _BuisnessListState extends State<BuisnessList> {
   void resetFilter() {
     setState(() {
       businessList = List<InvestorBusiness>.from(originalBusinessList);
-      valuationRange = const RangeValues(100000, 2000000);
+      valuationRange = const RangeValues(100000, 3500000);
     });
   }
 
@@ -139,7 +139,7 @@ class _BuisnessListState extends State<BuisnessList> {
           IconButton(
             icon: const Icon(Icons.logout),
             onPressed: () {
-              Navigator.pushNamed(context, StartScreen.routeName);
+              Navigator.pushReplacementNamed(context, StartScreen.routeName);
             },
           ),
         ],

@@ -41,6 +41,7 @@ class _LoginScreenState extends State<LoginScreen> {
     if (response.statusCode == 201) {
       final responseData = json.decode(response.body);
       final token = responseData['token'];
+      final username =responseData['user'];
 
       final prefs = await SharedPreferences.getInstance();
       prefs.setString('authToken', token);
@@ -53,6 +54,7 @@ class _LoginScreenState extends State<LoginScreen> {
         MaterialPageRoute(
           builder: (context) => InvestorTabScreen(
             authToken: token,
+            username: username,
           ),
         ),
       );

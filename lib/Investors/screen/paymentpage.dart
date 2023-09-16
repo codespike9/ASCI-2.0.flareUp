@@ -59,13 +59,8 @@ class _PaymentPageState extends State<PaymentPage> {
           return;
         }
 
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) =>
-                InvestorTabScreen(authToken: widget.authToken),
-          ),
-        );
+        Navigator.pushReplacementNamed(context, InvestorTabScreen.routeName,
+            arguments: authToken);
 
         // Handle success here
       } else {

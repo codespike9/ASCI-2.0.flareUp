@@ -243,7 +243,7 @@ class _BuisnessScreenState extends ConsumerState<BuisnessScreen> {
         actions: [
           IconButton(
             onPressed: () {
-              Navigator.pushNamed(context, StartScreen.routeName);
+              Navigator.pushReplacementNamed(context, StartScreen.routeName);
             },
             icon: const Icon(Icons.logout),
           ),

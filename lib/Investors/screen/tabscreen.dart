@@ -8,8 +8,10 @@ class InvestorTabScreen extends StatefulWidget {
   const InvestorTabScreen({
     super.key,
     required this.authToken,
+    this.username = 'name',
   });
   final String authToken;
+  final String username;
 
   static const String routeName = '/investor-tab-screen';
 
@@ -30,6 +32,7 @@ class _InvestorTabScreenState extends State<InvestorTabScreen> {
       BuisnessList(authToken: widget.authToken),
       YourInvestmentPage(
         authToken: widget.authToken,
+        username: widget.username,
       ),
     ];
   }

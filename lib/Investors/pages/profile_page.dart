@@ -7,8 +7,9 @@ import '../models/in_profile.dart';
 import '../widget/in_buisnesscard.dart';
 
 class YourInvestmentPage extends StatefulWidget {
-  const YourInvestmentPage({super.key, required this.authToken});
+  const YourInvestmentPage({super.key, required this.authToken,required this.username});
   final String authToken;
+  final String username;
 
   static const String routeName = '/investor-your_investment-page';
 
@@ -121,7 +122,7 @@ class _YourInvestmentPageState extends State<YourInvestmentPage> {
 
   @override
   Widget build(BuildContext context) {
-    String userName = investedbusinessList[0].userName;
+   // String userName = investedbusinessList[0].userName;
 
     final h = MediaQuery.of(context).size.height;
     return Scaffold(
@@ -156,7 +157,7 @@ class _YourInvestmentPageState extends State<YourInvestmentPage> {
               child: Column(
                 children: [
                   Text(
-                    'Name : $userName',
+                    'Name : ${widget.username}',
                     style: const TextStyle(
                         fontWeight: FontWeight.bold, fontSize: 20),
                   ),
