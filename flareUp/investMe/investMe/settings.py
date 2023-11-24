@@ -164,11 +164,11 @@ SESSION_COOKIE_SECURE = True  # Set to True for HTTPS sites
 
 EMAIL_HOST="smtp.gmail.com"
 EMAIL_PORT=587
-EMAIL_HOST_USER="dharmarajjena694@gmail.com"
-EMAIL_HOST_PASSWORD="sfumigyopzqibmvm"
+EMAIL_HOST_USER="host"
+EMAIL_HOST_PASSWORD="password"
 EMAIL_USE_TLS=True
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 
 
-KEY='rzp_test_84QavGB6R6hnD9'
-SECRET='PWGYJXE2ACiC00aUSgAvaSg2'
+KEY='razor pay key'
+SECRET='razor pay secret key'
